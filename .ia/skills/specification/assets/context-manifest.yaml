@@ -1,0 +1,69 @@
+# Manifesto interno de contexto. Criar antes de ler os arquivos listados.
+execution:
+  intent: REQUIREMENTS # REQUIREMENTS | ARTIFACT | FULL_SPEC
+  stage: REQUIREMENTS
+  feature: CHANGE_ME
+  status: planned # planned | reading | completed
+
+files:
+  - path: .ia/AGENTS.md
+    reason: regras do orquestrador e roteamento
+    artifact: workflow
+    required: true
+  - path: .ia/config/PROJECT.yaml
+    reason: identidade do projeto e fonte geral de requisitos
+    artifact: workflow
+    required: true
+  - path: .ia/config/paths.yaml
+    reason: raízes do projeto e caminhos oficiais
+    artifact: workflow
+    required: true
+  - path: .ia/skills/specification/SKILL.md
+    reason: processo e modo de execução
+    artifact: business.md
+    required: true
+  - path: .ia/gates/contexto.md
+    reason: critério de contexto antes de produzir o artefato
+    artifact: workflow
+    required: true
+  - path: .ia/rules/specification/spec-structure.md
+    reason: estrutura e estados permitidos
+    artifact: business.md
+    required: true
+  - path: .ia/corporate/requirements/AGENT.md
+    reason: responsabilidade do agente de requisitos
+    artifact: business.md
+    required: true
+  - path: .ia/corporate/requirements/RULES.md
+    reason: regras corporativas de requisitos
+    artifact: business.md
+    required: true
+  - path: .ia/corporate/requirements/SKILL.md
+    reason: procedimento corporativo de requisitos
+    artifact: business.md
+    required: true
+  - path: .ia/corporate/requirements/templates/business.md
+    reason: formato do artefato
+    artifact: business.md
+    required: true
+
+optional_files:
+  - path: .ia/specs/<ID>-<slug>/business.md
+    reason: revisar requisito existente
+    artifact: business.md
+    condition: arquivo existente e intenção de revisão
+  - path: .ia/specs/<ID>-<slug>/context-manifest.yaml
+    reason: preservar o manifesto da execução anterior
+    artifact: workflow
+    condition: revisão de uma Spec existente
+
+must_not_read:
+  - .ia/config/technology.yaml
+  - backend/**
+  - frontend/**
+  - .ia/corporate/api/**
+  - .ia/corporate/database/**
+  - .ia/corporate/security/**
+  - .ia/corporate/testing/**
+  - .ia/corporate/ui-ux/**
+  - .ia/specs/** # exceto os arquivos explicitamente listados em optional_files

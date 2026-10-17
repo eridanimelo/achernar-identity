@@ -1,0 +1,44 @@
+# # ============================================================
+# # technology.yaml — Stack ALVO de implementação
+# # ============================================================
+# Decisão humana (configuração inicial Achernar Identity, 2026-10-10).
+# Chaves backend/frontend/database: slugs de token único — preservados
+# porque skills/reuse-index/scripts/build_index.py faz parse simples
+# `chave: valor` e resolve extensões por substring (java/spring/angular).
+# Detalhamento versionado abaixo, em `details:` (ignorado pelo parser).
+technology:
+  backend: java-system-spring-boot-4
+  frontend: angular-22
+  database: postgresql
+
+details:
+  java_version: "27"
+  spring_boot: "4"
+  spring_security: true
+  spring_authorization_server: true
+  angular: "22"
+  frontend_styling: angular-material
+  angular_material: true
+  postgresql: true
+  liquibase: true
+  jpa_hibernate_domain: true
+  authorization_server_jdbc_components: true
+  backend_build: maven
+  lombok: false
+  local_runtime: docker-compose
+  docker_dir: docker
+  docker_compose_file: docker/docker-compose.yml
+  postgres_volume: achernar_identity_pgdata
+  hibernate_ddl_auto: validate
+  i18n: true
+  redis: false
+  # Decisões humanas registradas em 2026-10-11 (configuração inicial Achernar Identity).
+  # Preservam os slugs acima; somente chaves de detalhe adicionadas.
+  mailhog_local: true
+  mailhog_scope: local-only
+  production_email_provider: pending
+  smtp_config: external
+  action_link_base_url: external-config
+  security_audit_storage: postgresql-table
+  security_audit_table: security_audit_event
+  security_audit_migrations: liquibase

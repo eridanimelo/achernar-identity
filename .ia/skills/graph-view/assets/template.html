@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapa do framework .ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    /* Whiteprint (claro): papel técnico, tinta azul-marinho */
+    --bg: #F4F6F9;
+    --bg-grid: rgba(3, 22, 53, 0.055);
+    --panel-bg: #FFFFFF;
+    --panel-bg-soft: #F9FAFC;
+    --border: rgba(3, 22, 53, 0.13);
+    --text: #0F1B33;
+    --text-dim: #5B6B82;
+    --accent: #031635;
+    --edge: rgba(15, 27, 51, 0.16);
+    --edge-hi: #031635;
+    --edge-semantic: rgba(184, 134, 11, 0.55);
+    --edge-dependency: #C2410C;
+
+    --c-root: #B8860B;
+    --c-agents: #2563EB;
+    --c-skills: #0E9F6E;
+    --c-skill-asset: #8FD3BB;
+    --c-corporate: #7C3AED;
+    --c-corporate-template: #C9B7F7;
+    --c-rules: #D97706;
+    --c-gates: #DC2626;
+    --c-config: #64748B;
+    --c-workflows: #0891B2;
+    --c-docs: #94A3B8;
+    --c-meta: #CBD5E1;
+
+    --c-spec-business: #DB2777;
+    --c-spec-api: #7C3AED;
+    --c-spec-database: #0891B2;
+    --c-spec-tests: #16A34A;
+    --c-spec-other: #94A3B8;
+    --c-state: #78716C;
+    --c-discovery-out: #CA8A04;
+    --c-reviews: #4F46E5;
+    --c-requirements-src: #15803D;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B1220;
+      --bg-grid: rgba(255, 255, 255, 0.05);
+      --panel-bg: #121B2E;
+      --panel-bg-soft: #0F1729;
+      --border: rgba(255, 255, 255, 0.10);
+      --text: #E7ECF5;
+      --text-dim: #93A2BD;
+      --accent: #7FB3FF;
+      --edge: rgba(231, 236, 245, 0.14);
+      --edge-hi: #BFD7FF;
+      --edge-semantic: rgba(242, 193, 78, 0.55);
+      --edge-dependency: #FB923C;
+      --c-agents: #5B9CFF;
+      --c-skills: #34D399;
+      --c-skill-asset: #5FA88F;
+      --c-corporate: #A78BFA;
+      --c-corporate-template: #6C6291;
+      --c-rules: #F0A93A;
+      --c-gates: #F87171;
+      --c-config: #94A3B8;
+      --c-workflows: #22D3EE;
+      --c-docs: #64748B;
+      --c-meta: #475569;
+
+      --c-spec-business: #F472B6;
+      --c-spec-api: #A78BFA;
+      --c-spec-database: #22D3EE;
+      --c-spec-tests: #4ADE80;
+      --c-spec-other: #64748B;
+      --c-state: #A8A29E;
+      --c-discovery-out: #FACC15;
+      --c-reviews: #818CF8;
+      --c-requirements-src: #4ADE80;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1220;
+    --bg-grid: rgba(255, 255, 255, 0.05);
+    --panel-bg: #121B2E;
+    --panel-bg-soft: #0F1729;
+    --border: rgba(255, 255, 255, 0.10);
+    --text: #E7ECF5;
+    --text-dim: #93A2BD;
+    --accent: #7FB3FF;
+    --edge: rgba(231, 236, 245, 0.14);
+    --edge-hi: #BFD7FF;
+    --edge-semantic: rgba(242, 193, 78, 0.55);
+    --edge-dependency: #FB923C;
+
+    --c-root: #F2C14E;
+    --c-agents: #5B9CFF;
+    --c-skills: #34D399;
+    --c-skill-asset: #5FA88F;
+    --c-corporate: #A78BFA;
+    --c-corporate-template: #6C6291;
+    --c-rules: #F0A93A;
+    --c-gates: #F87171;
+    --c-config: #94A3B8;
+    --c-workflows: #22D3EE;
+    --c-docs: #64748B;
+    --c-meta: #475569;
+
+    --c-spec-business: #F472B6;
+    --c-spec-api: #A78BFA;
+    --c-spec-database: #22D3EE;
+    --c-spec-tests: #4ADE80;
+    --c-spec-other: #64748B;
+    --c-state: #A8A29E;
+    --c-discovery-out: #FACC15;
+    --c-reviews: #818CF8;
+    --c-requirements-src: #4ADE80;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
+
+  #bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 3;
+    padding: 18px 22px 12px;
+    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(6px);
+  }
+  h1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  header .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  header .stats {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 16px;
+  }
+  header .stats b { color: var(--text); font-weight: 600; }
+
+  #theme-toggle {
+    border: 1px solid var(--border);
+    background: var(--panel-bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  #theme-toggle:hover { border-color: var(--accent); }
+
+  #layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: calc(100% - 62px);
+  }
+
+  #canvas-wrap {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+  }
+  svg#graph {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+  }
+  svg#graph:active { cursor: grabbing; }
+
+  .node circle {
+    stroke: var(--bg);
+    stroke-width: 1.4px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .node text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    fill: var(--text-dim);
+    pointer-events: none;
+    transition: opacity 0.15s ease, fill 0.15s ease;
+  }
+  .node.root text {
+    font-size: 12px;
+    font-weight: 600;
+    fill: var(--text);
+  }
+  .link {
+    stroke: var(--edge);
+    stroke-width: 1px;
+    fill: none;
+    transition: stroke 0.15s ease, stroke-opacity 0.15s ease, stroke-width 0.15s ease;
+  }
+  .link.semantic {
+    stroke: var(--edge-semantic);
+    stroke-dasharray: 3 3;
+  }
+  .link.dependency {
+    stroke: var(--edge-dependency);
+    stroke-width: 1.8px;
+    opacity: 0.75;
+  }
+  .link.dependency.dim { opacity: 0.09 !important; }
+  .dim { opacity: 0.09 !important; }
+  .hi-node circle { stroke: var(--edge-hi); stroke-width: 2.4px; }
+  .hi-node text { fill: var(--text) !important; opacity: 1 !important; font-weight: 500; }
+  .hi-link { stroke: var(--edge-hi) !important; stroke-width: 1.6px !important; opacity: 0.85 !important; }
+
+  aside {
+    width: 302px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    background: var(--panel-bg);
+    padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    font-size: 12.5px;
+  }
+  @media (max-width: 780px) {
+    aside { position: absolute; right: 0; top: 0; bottom: 0; z-index: 4; box-shadow: -8px 0 24px rgba(0,0,0,0.15); }
+    #canvas-wrap { width: 100%; }
+  }
+
+  #search {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-bg-soft);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    margin-bottom: 14px;
+  }
+  #search:focus { border-color: var(--accent); }
+
+  .section-title {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin: 16px 0 8px;
+    font-weight: 600;
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .legend-item:hover { background: var(--panel-bg-soft); }
+  .legend-item .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-item .lbl { flex: 1; color: var(--text); }
+  .legend-item .cnt { color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+  .legend-item.off { opacity: 0.35; }
+  .legend-item.off .dot { box-shadow: none; }
+
+  #info {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 6px;
+  }
+  #info .empty { color: var(--text-dim); line-height: 1.5; }
+  #info .path {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    word-break: break-all;
+    background: var(--panel-bg-soft);
+    border: 1px solid var(--border);
+    padding: 8px 9px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  #info .group-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  #info ul { list-style: none; padding: 0; margin: 4px 0 0; }
+  #info li {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  #info li:hover { color: var(--accent); }
+  #info .rel-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin: 10px 0 2px; font-weight: 600; }
+
+  #hint {
+    position: absolute;
+    left: 16px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: color-mix(in srgb, var(--panel-bg) 88%, transparent);
+    border: 1px solid var(--border);
+    padding: 7px 10px;
+    border-radius: 7px;
+    z-index: 2;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div id="bg-grid"></div>
+
+<header>
+  <h1>Mapa do framework <code style="font-family:'IBM Plex Mono',monospace">.ia</code></h1>
+  <span class="sub">.ia/ (motor) + specs · state · discovery · reviews · requisitos (workspace) · gerado em /*__GENERATED_AT__*/</span>
+  <div class="stats">
+    <span><b id="stat-nodes">–</b> arquivos</span>
+    <span><b id="stat-edges">–</b> referências</span>
+  </div>
+  <button id="theme-toggle" type="button">tema: auto</button>
+</header>
+
+<div id="layout">
+  <div id="canvas-wrap">
+    <svg id="graph"></svg>
+    <div id="hint">arraste para separar e fixar · duplo clique para liberar · role para zoom · clique para ver conexões</div>
+  </div>
+  <aside>
+    <input id="search" type="text" placeholder="buscar arquivo ou pasta…" autocomplete="off">
+
+    <div class="section-title">Camadas</div>
+    <div id="legend"></div>
+
+    <div class="section-title">Tipo de ligação</div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim); line-height:1.9;">
+      <div><span style="display:inline-block;width:16px;border-top:1px solid var(--edge-hi);vertical-align:middle;margin-right:6px;"></span>referência (menção no texto)</div>
+      <div><span style="display:inline-block;width:16px;border-top:1px dashed var(--edge-semantic);vertical-align:middle;margin-right:6px;"></span>roteamento do orquestrador</div>
+      <div><span style="display:inline-block;width:16px;border-top:2px solid var(--edge-dependency);vertical-align:middle;margin-right:6px;"></span>Spec depende de Spec →</div>
+    </div>
+
+    <div id="info">
+      <div class="empty">Clique em qualquer nó do grafo para ver o caminho completo e tudo que ele referencia (ou é referenciado por).</div>
+    </div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const GRAPH_DATA = /*__GRAPH_DATA_JSON__*/;
+</script>
+<script>
+(function () {
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  let themeState = 'auto';
+  themeBtn.addEventListener('click', () => {
+    themeState = themeState === 'auto' ? 'dark' : (themeState === 'dark' ? 'light' : 'auto');
+    if (themeState === 'auto') { root.removeAttribute('data-theme'); themeBtn.textContent = 'tema: auto'; }
+    else { root.setAttribute('data-theme', themeState); themeBtn.textContent = 'tema: ' + themeState; }
+  });
+
+  const GROUP_ORDER = ['root','agents','skills','corporate','gates','rules','workflows','config','docs',
+                        'spec-business','spec-api','spec-database','spec-tests','spec-other','state','discovery-out','reviews','requirements-src',
+                        'skill-asset','corporate-template','meta'];
+  const GROUP_COLOR_VAR = {
+    root: '--c-root', agents: '--c-agents', skills: '--c-skills', 'skill-asset': '--c-skill-asset',
+    corporate: '--c-corporate', 'corporate-template': '--c-corporate-template', rules: '--c-rules',
+    gates: '--c-gates', config: '--c-config', workflows: '--c-workflows', docs: '--c-docs', meta: '--c-meta',
+    'spec-business': '--c-spec-business', 'spec-api': '--c-spec-api', 'spec-database': '--c-spec-database',
+    'spec-tests': '--c-spec-tests', 'spec-other': '--c-spec-other', state: '--c-state', 'discovery-out': '--c-discovery-out',
+    reviews: '--c-reviews', 'requirements-src': '--c-requirements-src'
+  };
+  const DEFAULT_OFF = new Set(['skill-asset', 'corporate-template', 'meta']);
+
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  const nodesRaw = GRAPH_DATA.nodes;
+  const edgesRaw = GRAPH_DATA.edges;
+  const groupMeta = GRAPH_DATA.groupMeta;
+
+  document.getElementById('stat-nodes').textContent = nodesRaw.length;
+  document.getElementById('stat-edges').textContent = edgesRaw.length;
+
+  const activeGroups = new Set(GROUP_ORDER.filter(g => !DEFAULT_OFF.has(g)));
+
+  // ---------- Legend ----------
+  const legendEl = document.getElementById('legend');
+  const counts = {};
+  nodesRaw.forEach(n => counts[n.group] = (counts[n.group] || 0) + 1);
+
+  GROUP_ORDER.forEach(g => {
+    if (!counts[g]) return;
+    const item = document.createElement('div');
+    item.className = 'legend-item' + (activeGroups.has(g) ? '' : ' off');
+    item.dataset.group = g;
+    item.innerHTML = `<span class="dot" style="background:var(${GROUP_COLOR_VAR[g]})"></span>
+                       <span class="lbl">${(groupMeta[g] && groupMeta[g].label) || g}</span>
+                       <span class="cnt">${counts[g]}</span>`;
+    item.addEventListener('click', () => {
+      if (activeGroups.has(g)) { activeGroups.delete(g); item.classList.add('off'); }
+      else { activeGroups.add(g); item.classList.remove('off'); }
+      applyFilter();
+    });
+    legendEl.appendChild(item);
+  });
+
+  // ---------- Graph setup ----------
+  const svg = d3.select('#graph');
+  const defs = svg.append('defs');
+  defs.append('marker')
+    .attr('id', 'arrow-dependency')
+    .attr('viewBox', '0 0 10 10')
+    .attr('refX', 9)
+    .attr('refY', 5)
+    .attr('markerWidth', 7)
+    .attr('markerHeight', 7)
+    .attr('orient', 'auto-start-reverse')
+    .append('path')
+    .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+    .attr('fill', 'var(--edge-dependency)');
+  const gRoot = svg.append('g');
+  const gLinks = gRoot.append('g').attr('class', 'links');
+  const gNodes = gRoot.append('g').attr('class', 'nodes');
+
+  const zoom = d3.zoom().scaleExtent([0.15, 5]).on('zoom', (ev) => gRoot.attr('transform', ev.transform));
+  svg.call(zoom);
+
+  const byId = new Map(nodesRaw.map(n => [n.id, n]));
+  const outMap = new Map(), inMap = new Map();
+  edgesRaw.forEach(e => {
+    if (!outMap.has(e.from)) outMap.set(e.from, []);
+    outMap.get(e.from).push(e.to);
+    if (!inMap.has(e.to)) inMap.set(e.to, []);
+    inMap.get(e.to).push(e.from);
+  });
+
+  const nodes = nodesRaw.map(n => ({ ...n }));
+  const links = edgesRaw.map(e => ({ source: e.from, target: e.to, semantic: !!e.semantic, kind: e.kind || 'reference' }));
+
+  const degExtent = d3.extent(nodes, d => d.degree || 0);
+  const rScale = d3.scaleSqrt().domain([Math.max(degExtent[0], 0), Math.max(degExtent[1], 1)]).range([4, 15]);
+  function radiusOf(d) { return d.group === 'root' ? 20 : rScale(d.degree || 0); }
+
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(l => l.kind === 'dependency' ? 160 : (l.semantic ? 130 : 46)).strength(l => l.kind === 'dependency' ? 0.15 : (l.semantic ? 0.25 : 0.35)))
+    .force('charge', d3.forceManyBody().strength(-130))
+    .force('collide', d3.forceCollide()
+      .radius(d => radiusOf(d) + Math.min(70, 15 + (d.label?.length || 0) * 2))
+      .strength(0.9)
+      .iterations(2))
+    .force('center', d3.forceCenter(0, 0))
+    .force('x', d3.forceX(0).strength(0.03))
+    .force('y', d3.forceY(0).strength(0.03));
+
+  const linkSel = gLinks.selectAll('path.link')
+    .data(links)
+    .join('path')
+    .attr('class', d => 'link' + (d.semantic ? ' semantic' : '') + (d.kind === 'dependency' ? ' dependency' : ''))
+    .attr('marker-end', d => d.kind === 'dependency' ? 'url(#arrow-dependency)' : null);
+
+  const nodeSel = gNodes.selectAll('g.node')
+    .data(nodes)
+    .join('g')
+    .attr('class', d => 'node' + (d.group === 'root' ? ' root' : ''))
+    .call(d3.drag()
+      .on('start', (ev, d) => {
+        if (ev.sourceEvent) ev.sourceEvent.stopPropagation();
+        if (!ev.active) sim.alphaTarget(0.08).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      })
+      .on('drag', (ev, d) => {
+        d.fx = ev.x;
+        d.fy = ev.y;
+      })
+      .on('end', (ev, d) => {
+        if (!ev.active) sim.alphaTarget(0);
+        // Mantém o nó exatamente onde foi solto.
+        d.fx = ev.x;
+        d.fy = ev.y;
+      }));
+
+  nodeSel.append('circle')
+    .attr('r', radiusOf)
+    .attr('fill', d => `var(${GROUP_COLOR_VAR[d.group]})`);
+
+  nodeSel.append('text')
+    .attr('x', d => radiusOf(d) + 5)
+    .attr('y', 3)
+    .text(d => d.label);
+
+  nodeSel.on('click', (ev, d) => { ev.stopPropagation(); selectNode(d.id); });
+
+  // Duplo clique libera um nó que foi fixado manualmente.
+  nodeSel.on('dblclick', (ev, d) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+    d.fx = null;
+    d.fy = null;
+    sim.alpha(0.20).restart();
+  });
+
+  svg.on('click', () => clearSelection());
+
+  sim.on('tick', () => {
+    linkSel.attr('d', d => `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`);
+    nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  // fit view after layout settles a bit
+  setTimeout(() => {
+    const bounds = gRoot.node().getBBox();
+    const wrap = document.getElementById('canvas-wrap');
+    const w = wrap.clientWidth, h = wrap.clientHeight;
+    const scale = Math.min(0.9, 0.85 / Math.max(bounds.width / w, bounds.height / h, 0.001));
+    const tx = w / 2 - scale * (bounds.x + bounds.width / 2);
+    const ty = h / 2 - scale * (bounds.y + bounds.height / 2);
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+  }, 900);
+
+  // ---------- Filter by active groups ----------
+  function applyFilter() {
+    nodeSel.style('display', d => activeGroups.has(d.group) ? null : 'none');
+    linkSel.style('display', d => {
+      const s = byId.get(d.source.id || d.source), t = byId.get(d.target.id || d.target);
+      return (s && t && activeGroups.has(s.group) && activeGroups.has(t.group)) ? null : 'none';
+    });
+  }
+  applyFilter();
+
+  // ---------- Selection / info panel ----------
+  const infoEl = document.getElementById('info');
+
+  function clearSelection() {
+    nodeSel.classed('dim', false).classed('hi-node', false);
+    linkSel.classed('dim', false).classed('hi-link', false);
+    infoEl.innerHTML = '<div class="empty">Clique em qualquer nó do grafo para ver o caminho completo e tudo que ele referencia (ou é referenciado por).</div>';
+  }
+
+  function selectNode(id) {
+    const outs = outMap.get(id) || [];
+    const ins = inMap.get(id) || [];
+    const neighborSet = new Set([id, ...outs, ...ins]);
+
+    nodeSel.classed('dim', d => !neighborSet.has(d.id)).classed('hi-node', d => neighborSet.has(d.id));
+    linkSel
+      .classed('dim', d => (d.source.id || d.source) !== id && (d.target.id || d.target) !== id)
+      .classed('hi-link', d => (d.source.id || d.source) === id || (d.target.id || d.target) === id);
+
+    const n = byId.get(id);
+    let html = `<div class="path">${n.path}</div>
+                <span class="group-tag" style="border-color:var(${GROUP_COLOR_VAR[n.group]});color:var(${GROUP_COLOR_VAR[n.group]})">${(groupMeta[n.group] && groupMeta[n.group].label) || n.group}</span>`;
+    if (outs.length) {
+      html += `<div class="rel-title">referencia (${outs.length})</div><ul>` +
+        outs.map(o => `<li data-id="${o}">→ ${o}</li>`).join('') + `</ul>`;
+    }
+    if (ins.length) {
+      html += `<div class="rel-title">é referenciado por (${ins.length})</div><ul>` +
+        ins.map(i => `<li data-id="${i}">← ${i}</li>`).join('') + `</ul>`;
+    }
+    if (!outs.length && !ins.length) {
+      html += `<div class="empty">Nenhuma referência detectada — nó isolado no grafo.</div>`;
+    }
+    infoEl.innerHTML = html;
+    infoEl.querySelectorAll('li[data-id]').forEach(li => {
+      li.addEventListener('click', () => selectNode(li.dataset.id));
+    });
+  }
+
+  // ---------- Search ----------
+  document.getElementById('search').addEventListener('input', (ev) => {
+    const q = ev.target.value.trim().toLowerCase();
+    if (!q) { clearSelection(); return; }
+    const matches = nodes.filter(n => n.path.toLowerCase().includes(q));
+    const matchSet = new Set(matches.map(n => n.id));
+    nodeSel.classed('dim', d => !matchSet.has(d.id)).classed('hi-node', d => matchSet.has(d.id));
+    linkSel.classed('dim', true).classed('hi-link', false);
+    if (matches.length === 1) {
+      infoEl.innerHTML = `<div class="empty">1 resultado — clique no nó destacado para abrir os detalhes.</div>`;
+    } else {
+      infoEl.innerHTML = `<div class="empty">${matches.length} resultado(s) destacado(s) no grafo.</div>`;
+    }
+  });
+})();
+</script>
+</body>
+</html>

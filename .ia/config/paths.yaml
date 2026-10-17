@@ -1,0 +1,37 @@
+# Caminhos relativos à raiz do repositório — portáveis entre máquinas/devs.
+# Se a estrutura local de algum dev divergir, ajuste aqui mesmo por consenso
+# do time; evite path absoluto pessoal (quebra para todo mundo além de você).
+cache:
+  root: .cache
+
+backend:
+  root: ./backend
+
+docker:
+  root: ./docker
+
+frontend:
+  root: ./frontend
+  project: ./frontend
+
+# Documentos-fonte de requisitos (PRDs, docs brutos fornecidos por humano) —
+# entrada para agents/requirements, nunca gerado pelo framework. Fica
+# diretamente em requisitos/ (arquivos soltos), fora dos subdiretórios
+# reservados abaixo.
+requirements:
+  root: requisitos
+
+# Saída/estado gerado pelo framework rodando NESTE projeto. Aninhado dentro
+# de requisitos/ de propósito: tudo que é dinâmico (gerado a cada feature)
+# fica sob o mesmo guarda-chuva, fora de .ia/ (que é o motor, portátil).
+workspace:
+  specs: requisitos/specs
+  state: requisitos/state
+  discovery: requisitos/discovery
+  reviews: requisitos/reviews
+
+# Sistema legado (fonte de evidências AS-IS para features LEGACY) —
+# ajustar o caminho por projeto. Quando o diretório não existir, os scripts
+# (ex.: reuse-index) ignoram a raiz com aviso em vez de falhar.
+legacy:
+  root: ./legacy
