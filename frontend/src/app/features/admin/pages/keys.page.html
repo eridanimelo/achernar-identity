@@ -1,0 +1,56 @@
+<app-page-header [title]="'admin.keys.title' | transloco" [subtitle]="'admin.keys.subtitle' | transloco">
+  <button mat-flat-button type="button" [disabled]="busy()" (click)="rotate()">{{ 'admin.keys.rotate' | transloco }}</button>
+</app-page-header>
+
+@if (activeTooOld()) {
+  <app-form-alert tone="info" [message]="'admin.keys.oldWarning' | transloco" />
+}
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+  <button mat-stroked-button type="button" (click)="load()">{{ 'common.retry' | transloco }}</button>
+}
+
+@if (loading() && !keys()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="4" />
+} @else if (keys(); as list) {
+  @if (list.length === 0) {
+    <app-empty-state icon="key_off" [title]="'admin.keys.empty' | transloco" />
+  } @else {
+    <div class="table-scroll">
+      <table mat-table [dataSource]="list">
+        <caption class="sr-only">{{ 'admin.keys.title' | transloco }}</caption>
+        <ng-container matColumnDef="kid">
+          <th mat-header-cell *matHeaderCellDef scope="col">kid</th>
+          <td mat-cell *matCellDef="let k"><code class="kid">{{ k.kid }}</code></td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'account.statusLabel' | transloco }}</th>
+          <td mat-cell *matCellDef="let k"><app-status-chip [tone]="tone(k.status)" [label]="'key.status.' + k.status | transloco" /></td>
+        </ng-container>
+        <ng-container matColumnDef="publish">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'admin.keys.publishAt' | transloco }}</th>
+          <td mat-cell *matCellDef="let k">{{ k.publish_at | localDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="activate">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'admin.keys.activateAt' | transloco }}</th>
+          <td mat-cell *matCellDef="let k">{{ k.activate_at | localDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="retire">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'admin.keys.retireAt' | transloco }}</th>
+          <td mat-cell *matCellDef="let k">{{ k.retire_at | localDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef scope="col"><span class="sr-only">{{ 'common.actions' | transloco }}</span></th>
+          <td mat-cell *matCellDef="let k">
+            @if (canRemove(k)) {
+              <button mat-button type="button" [disabled]="busy()" (click)="remove(k)">{{ 'admin.keys.remove' | transloco }}</button>
+            }
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+    </div>
+  }
+}

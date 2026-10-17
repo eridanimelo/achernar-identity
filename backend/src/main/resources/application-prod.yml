@@ -1,0 +1,7 @@
+# Produção: logs JSON estruturados (D-35). Validações de subida em PropertiesValidator (PV-01…PV-06; deployment-operations §5).
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    root: INFO

@@ -1,0 +1,17 @@
+# Changelog mestre (D-36): arquivos numerados NNNN-descricao.yaml; changeSet id = NNNN-n, author = achernar.
+# Changesets já aplicados NUNCA são alterados; mudanças novas entram em novos arquivos.
+databaseChangeLog:
+  - include:
+      file: db/changelog/0001-registry.yaml
+  - include:
+      file: db/changelog/0002-accounts.yaml
+  - include:
+      file: db/changelog/0003-sessions.yaml
+  - include:
+      file: db/changelog/0004-social-flow.yaml
+  - include:
+      file: db/changelog/0005-signing-keys.yaml
+  - include:
+      file: db/changelog/0006-audit-ratelimit.yaml
+  - include:
+      file: db/changelog/0007-email-outbox.yaml

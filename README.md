@@ -8,11 +8,10 @@ segurança, e-mails transacionais e interface própria (Angular).
 
 Organização: Eridani · Versão do projeto: 1.0.0
 
-> **Estado atual:** fase **documental concluída**. Discovery e as 14 Specs
-> (com documentos transversais) estão escritos e verificados por script de
-> rastreabilidade. **Nenhum código do produto foi implementado**, nenhuma
-> configuração Docker foi alterada. A **implementação** exige revisão humana e
-> intenção explícita (GATE-AUT).
+> **Estado atual:** implementação **concluída na branch `feature/implementacao-achernar-identity`**
+> (backend, frontend e testes). O frontend foi compilado, analisado (ESLint) e testado (62 testes). O
+> **backend ainda precisa ser compilado e verificado com Maven/Docker** (`mvn verify`): o ambiente em que foi
+> escrito não tinha acesso a Maven nem a Docker — ver `requisitos/specs/_shared/implementation-decisions.md` §4.
 
 Fora do escopo: SSO entre aplicações, alternativa ao Keycloak/OIDC completo,
 multi-tenancy, federação de identidades, Helm/Kubernetes.
@@ -52,9 +51,10 @@ achernar-identity/
 │   ├── reviews/     ← completeness-check.md
 │   ├── state/       ← current.yaml (retomada de contexto)
 │   └── tools/       ← verify_specs.py (ferramenta de documentação: verifica IDs e gera a matriz)
-├── docker/          ← docker-compose.yml + .env.example (inalterados nesta fase)
-├── backend/         ← (futuro) ainda não criado
-└── frontend/        ← (futuro) ainda não criado
+├── docker/          ← compose de desenvolvimento (PG18 + Mailpit) e de produção de referência (Caddy), .env.example
+├── backend/         ← API (Java 25 · Spring Boot 4.1 · JDBC · Liquibase) + Dockerfile
+├── frontend/        ← UI (Angular 22 · Material · Transloco · Vitest) + Dockerfile/nginx
+└── .github/         ← CI (build e testes)
 ```
 
 Ponto de entrada da documentação: `requisitos/specs/_shared/index.md`.
@@ -79,3 +79,40 @@ E7 controle de tokens e administração → E8 login social → E9 fechamento (r
 Provedor SMTP, domínios/TLS, apps OAuth Google/Facebook, logotipo, geração da
 chave-mestra e do segredo de bootstrap e janela de manutenção (A-02…A-07 em
 `requisitos/discovery/system.md`). Nenhuma credencial real deve entrar no repositório.
+
+---
+
+## 3. Desenvolvimento local
+
+Pré-requisitos: JDK 25, Maven 3.9+, **Node 24** (Angular 22 não roda em Node 22), Docker.
+
+```bash
+docker compose -f docker/docker-compose.yml up -d        # PostgreSQL 18 + Mailpit (http://localhost:8025)
+
+cd backend
+ACHERNAR_DEV_INSECURE_KEY=true ACHERNAR_BOOTSTRAP_TOKEN=dev-bootstrap-token-0123456789-0123456789 \
+  ACHERNAR_DB_PASSWORD=achernar_identity mvn spring-boot:run     # http://localhost:8080 (perfil dev)
+
+cd frontend
+npm ci && npm start                                       # http://localhost:4200 (proxy → :8080)
+```
+
+Sem administrador, a UI leva a `/setup`; informe o token de bootstrap acima. `ACHERNAR_DEV_INSECURE_KEY=true`
+existe só para desenvolvimento (em produção a chave mestra real é obrigatória).
+
+### Testes
+
+```bash
+cd backend  && mvn verify          # unitários (*Test), arquitetura (ArchUnit) e integração (*IT; Testcontainers → Docker)
+cd frontend && npm run verify      # i18n:check + lint + Vitest + build
+```
+
+### Produção (referência)
+
+```bash
+cp docker/.env.example docker/.env   # ACHERNAR_MASTER_KEY (openssl rand -base64 32), SMTP, host…
+docker compose -f docker/docker-compose.prod.yml --env-file docker/.env up -d --build
+```
+
+O Caddy termina TLS e serve UI e API na mesma origem (cookie de refresh `HttpOnly; SameSite=Strict`, sem CORS).
+O Actuator (9090) não é publicado. Remova `ACHERNAR_BOOTSTRAP_TOKEN` depois de criar o primeiro administrador.

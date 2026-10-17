@@ -1,0 +1,58 @@
+<app-auth-layout [title]="'setup.title' | transloco" [subtitle]="'setup.subtitle' | transloco">
+  @if (done()) {
+    <div class="success" role="status">
+      <p>{{ 'setup.success' | transloco }}</p>
+      <button mat-flat-button type="button" (click)="signIn()">{{ 'auth.signIn' | transloco }}</button>
+    </div>
+  } @else {
+    <form class="form-column" [formGroup]="form" (ngSubmit)="submit()" appFocusInvalid novalidate>
+      <app-error-summary [items]="summary()" [focusToken]="submits()" />
+      @if (failure(); as f) {
+        <app-form-alert [message]="failureMessage()" [traceId]="f.traceId" />
+      }
+      @if (blocked()) {
+        <p class="muted" role="status">{{ 'common.retryIn' | transloco: { seconds: wait() } }}</p>
+      }
+      <app-password-field
+        name="bootstrap_token"
+        [control]="form.controls.bootstrap_token"
+        [label]="'setup.token' | transloco"
+        [hint]="'setup.tokenHint' | transloco"
+        autocomplete="new-password"
+        [showToggle]="true"
+      />
+      <app-text-field
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        [maxlength]="254"
+        [control]="form.controls.email"
+        [label]="'auth.email' | transloco"
+        [required]="true"
+      />
+      <app-password-field
+        name="password"
+        [control]="form.controls.password"
+        [label]="'auth.password' | transloco"
+        [hint]="'password.hint' | transloco"
+        autocomplete="new-password"
+        [showMeter]="true"
+      />
+      <app-password-field
+        name="confirm"
+        [control]="form.controls.confirm"
+        [label]="'auth.confirmPassword' | transloco"
+        autocomplete="new-password"
+      />
+      <div class="actions">
+        <button mat-flat-button type="submit" [disabled]="busy() || blocked()" [attr.aria-busy]="busy()">
+          @if (busy()) {
+            <mat-spinner diameter="18" />
+          }
+          {{ 'setup.submit' | transloco }}
+        </button>
+      </div>
+    </form>
+  }
+</app-auth-layout>

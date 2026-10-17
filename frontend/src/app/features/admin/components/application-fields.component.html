@@ -1,0 +1,83 @@
+<div [formGroup]="form()" class="fields">
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.general' | transloco }}</legend>
+    <app-text-field name="client_id" [control]="form().controls.client_id" label="client_id" [required]="true"
+      [hint]="'admin.apps.clientIdHint' | transloco" [maxlength]="64" autocomplete="off" />
+    <app-text-field name="name" [control]="form().controls.name" [label]="'admin.apps.name' | transloco" [required]="true" [maxlength]="100" />
+    <app-text-field name="description" [control]="form().controls.description" [label]="'admin.apps.description' | transloco" [maxlength]="500" />
+    <mat-form-field appearance="outline" class="narrow">
+      <mat-label>{{ 'admin.apps.type' | transloco }}</mat-label>
+      <mat-select formControlName="type" name="type">
+        <mat-option value="BROWSER">BROWSER</mat-option>
+        <mat-option value="CONFIDENTIAL">CONFIDENTIAL</mat-option>
+      </mat-select>
+      <mat-hint>{{ ('admin.apps.typeHint.' + form().controls.type.value) | transloco }}</mat-hint>
+    </mat-form-field>
+    @if (!isNew()) {
+      <mat-form-field appearance="outline" class="narrow">
+        <mat-label>{{ 'account.statusLabel' | transloco }}</mat-label>
+        <mat-select formControlName="status" name="status">
+          <mat-option value="ACTIVE">{{ 'registry.status.ACTIVE' | transloco }}</mat-option>
+          <mat-option value="DISABLED">{{ 'registry.status.DISABLED' | transloco }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+  </fieldset>
+
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.origins' | transloco }}</legend>
+    <p class="muted">{{ 'admin.apps.originsHint' | transloco }}</p>
+    <app-chips-input name="origins" [label]="'admin.apps.origins' | transloco" [validate]="originOk" [max]="20"
+      invalidKey="validation.origin" [control]="form().controls.origins" placeholder="https://app.exemplo.com" />
+  </fieldset>
+
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.redirects' | transloco }}</legend>
+    <p class="muted">{{ 'admin.apps.redirectsHint' | transloco }}</p>
+    <app-chips-input name="redirect_uris" [label]="'admin.apps.redirects' | transloco" [validate]="urlOk" [max]="20"
+      invalidKey="validation.url" [control]="form().controls.redirect_uris" placeholder="https://app.exemplo.com/auth/callback" />
+  </fieldset>
+
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.actionUrls' | transloco }}</legend>
+    <app-text-field name="verify_email_url" type="url" [control]="form().controls.verify_email_url" [label]="'admin.apps.verifyUrl' | transloco" />
+    <app-text-field name="reset_password_url" type="url" [control]="form().controls.reset_password_url" [label]="'admin.apps.resetUrl' | transloco" />
+    <app-text-field name="confirm_email_change_url" type="url" [control]="form().controls.confirm_email_change_url" [label]="'admin.apps.emailChangeUrl' | transloco" />
+  </fieldset>
+
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.apis' | transloco }}</legend>
+    @if (form().controls.audiences.length === 0) {
+      <p class="muted">{{ 'admin.apps.noApis' | transloco }}</p>
+    }
+    <ul class="aud">
+      @for (g of form().controls.audiences.controls; track g.controls.audience.value; let i = $index) {
+        <li [formGroup]="groupOf(i)">
+          <code>{{ g.controls.audience.value }}</code>
+          <mat-checkbox formControlName="is_default">{{ 'admin.apps.default' | transloco }}</mat-checkbox>
+          <button type="button" class="link" (click)="removeApi.emit(i)">{{ 'common.remove' | transloco }}</button>
+        </li>
+      }
+    </ul>
+    @if (availableApis().length > 0) {
+      <mat-form-field appearance="outline" class="narrow">
+        <mat-label>{{ 'admin.apps.addApi' | transloco }}</mat-label>
+        <mat-select [value]="pendingApi()" (selectionChange)="choose($event.value)">
+          @for (a of availableApis(); track a.id) {
+            <mat-option [value]="a.audience">{{ a.name }} · {{ a.audience }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </fieldset>
+
+  <fieldset class="block">
+    <legend>{{ 'admin.apps.options' | transloco }}</legend>
+    <mat-slide-toggle formControlName="allow_registration">{{ 'admin.apps.allowRegistration' | transloco }}</mat-slide-toggle>
+    <mat-slide-toggle formControlName="identity_api_access">{{ 'admin.apps.identityAccess' | transloco }}</mat-slide-toggle>
+    <mat-slide-toggle formControlName="google_enabled">{{ 'admin.apps.google' | transloco }}</mat-slide-toggle>
+    <mat-slide-toggle formControlName="facebook_enabled">{{ 'admin.apps.facebook' | transloco }}</mat-slide-toggle>
+    <app-text-field name="access_token_ttl_seconds" type="number" inputmode="numeric" [control]="form().controls.access_token_ttl_seconds"
+      [label]="'admin.apps.ttl' | transloco" [hint]="'admin.apps.ttlHint' | transloco" />
+  </fieldset>
+</div>

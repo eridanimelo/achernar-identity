@@ -1,0 +1,27 @@
+# Outbox transacional de e-mail. data-model.md §2.13.
+databaseChangeLog:
+  - changeSet:
+      id: 0007-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE email_outbox (
+                id              uuid         NOT NULL PRIMARY KEY,
+                template        varchar(32)  NOT NULL,
+                locale          varchar(8)   NOT NULL,
+                to_address      varchar(254) NOT NULL,
+                account_id      uuid,
+                application_id  uuid,
+                payload_enc     bytea,
+                status          varchar(8)   NOT NULL,
+                attempts        integer      NOT NULL DEFAULT 0,
+                next_attempt_at timestamptz  NOT NULL,
+                locked_until    timestamptz,
+                last_error      varchar(300),
+                created_at      timestamptz  NOT NULL,
+                sent_at         timestamptz,
+                CONSTRAINT ck_outbox_status CHECK (status IN ('PENDING','SENT','FAILED'))
+              );
+              CREATE INDEX ix_outbox_due ON email_outbox (next_attempt_at) WHERE status = 'PENDING';
+              CREATE INDEX ix_outbox_purge ON email_outbox (status, created_at);

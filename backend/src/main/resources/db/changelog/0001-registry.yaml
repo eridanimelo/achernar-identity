@@ -1,0 +1,89 @@
+# Registro de aplicações clientes e APIs consumidoras (FT-09). data-model.md §2.4 e §2.5.
+databaseChangeLog:
+  - changeSet:
+      id: 0001-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE application (
+                id                          uuid         NOT NULL PRIMARY KEY,
+                client_id                   varchar(64)  NOT NULL,
+                name                        varchar(100) NOT NULL,
+                description                 varchar(500),
+                type                        varchar(16)  NOT NULL,
+                status                      varchar(16)  NOT NULL,
+                allow_registration          boolean      NOT NULL DEFAULT false,
+                identity_api_access         boolean      NOT NULL DEFAULT false,
+                google_enabled              boolean      NOT NULL DEFAULT false,
+                facebook_enabled            boolean      NOT NULL DEFAULT false,
+                access_token_ttl_seconds    integer,
+                verify_email_url            varchar(500),
+                reset_password_url          varchar(500),
+                confirm_email_change_url    varchar(500),
+                is_system                   boolean      NOT NULL DEFAULT false,
+                created_at                  timestamptz  NOT NULL,
+                updated_at                  timestamptz  NOT NULL,
+                version                     bigint       NOT NULL DEFAULT 0,
+                CONSTRAINT uq_application_client_id UNIQUE (client_id),
+                CONSTRAINT ck_application_client_id CHECK (client_id ~ '^[a-z0-9-]{3,64}$'),
+                CONSTRAINT ck_application_type CHECK (type IN ('BROWSER','CONFIDENTIAL')),
+                CONSTRAINT ck_application_status CHECK (status IN ('ACTIVE','DISABLED')),
+                CONSTRAINT ck_application_ttl CHECK (access_token_ttl_seconds IS NULL OR access_token_ttl_seconds BETWEEN 300 AND 900)
+              );
+              CREATE INDEX ix_app_status ON application (status);
+
+              CREATE TABLE application_origin (
+                application_id uuid         NOT NULL REFERENCES application (id) ON DELETE CASCADE,
+                origin         varchar(255) NOT NULL,
+                PRIMARY KEY (application_id, origin)
+              );
+              CREATE INDEX ix_application_origin_origin ON application_origin (origin);
+
+              CREATE TABLE application_redirect_uri (
+                application_id uuid         NOT NULL REFERENCES application (id) ON DELETE CASCADE,
+                uri            varchar(500) NOT NULL,
+                PRIMARY KEY (application_id, uri)
+              );
+
+              CREATE TABLE application_secret (
+                id             uuid        NOT NULL PRIMARY KEY,
+                application_id uuid        NOT NULL REFERENCES application (id) ON DELETE CASCADE,
+                secret_hash    varchar(64) NOT NULL,
+                created_at     timestamptz NOT NULL,
+                revoked_at     timestamptz,
+                last_used_at   timestamptz,
+                CONSTRAINT uq_app_secret_hash UNIQUE (secret_hash)
+              );
+              CREATE INDEX ix_app_secret_app_active ON application_secret (application_id) WHERE revoked_at IS NULL;
+
+              CREATE TABLE resource_api (
+                id          uuid         NOT NULL PRIMARY KEY,
+                audience    varchar(200) NOT NULL,
+                name        varchar(100) NOT NULL,
+                description varchar(500),
+                status      varchar(16)  NOT NULL,
+                created_at  timestamptz  NOT NULL,
+                updated_at  timestamptz  NOT NULL,
+                version     bigint       NOT NULL DEFAULT 0,
+                CONSTRAINT uq_resource_api_audience UNIQUE (audience),
+                CONSTRAINT ck_resource_api_status CHECK (status IN ('ACTIVE','DISABLED'))
+              );
+
+              CREATE TABLE resource_api_secret (
+                id              uuid        NOT NULL PRIMARY KEY,
+                resource_api_id uuid        NOT NULL REFERENCES resource_api (id) ON DELETE CASCADE,
+                secret_hash     varchar(64) NOT NULL,
+                created_at      timestamptz NOT NULL,
+                revoked_at      timestamptz,
+                last_used_at    timestamptz,
+                CONSTRAINT uq_resource_api_secret_hash UNIQUE (secret_hash)
+              );
+              CREATE INDEX ix_api_secret_api_active ON resource_api_secret (resource_api_id) WHERE revoked_at IS NULL;
+
+              CREATE TABLE application_audience (
+                application_id  uuid    NOT NULL REFERENCES application (id) ON DELETE CASCADE,
+                resource_api_id uuid    NOT NULL REFERENCES resource_api (id),
+                is_default      boolean NOT NULL DEFAULT false,
+                PRIMARY KEY (application_id, resource_api_id)
+              );

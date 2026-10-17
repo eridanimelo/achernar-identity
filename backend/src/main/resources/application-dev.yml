@@ -1,0 +1,7 @@
+# Desenvolvimento local: Compose (PostgreSQL + MailHog) + backend/frontend no host.
+achernar:
+  cookie:
+    secure: ${ACHERNAR_COOKIE_SECURE:false}
+logging:
+  level:
+    com.eridani.achernar: DEBUG

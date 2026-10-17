@@ -1,0 +1,48 @@
+// Tokens de cor (visual-proposal §2). O Material 3 é mapeado sobre eles em _theme.scss.
+:root {
+  --ach-bg: #f6f8fe;
+  --ach-surface: #ffffff;
+  --ach-surface-2: #edf1fc;
+  --ach-text: #0e1630;
+  --ach-text-2: #4a5578;
+  --ach-primary: #1d4ed8;
+  --ach-on-primary: #ffffff;
+  --ach-accent: #0e7c93;
+  --ach-outline: #6b7599;
+  --ach-error: #b3261e;
+  --ach-success: #1b6e43;
+  --ach-warning: #7a5200;
+  --ach-focus: #1d4ed8;
+  --ach-radius-field: 12px;
+  --ach-radius-card: 16px;
+  --ach-radius-dialog: 24px;
+  --ach-font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ach-font-title: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ach-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@mixin dark-tokens {
+  --ach-bg: #0b1020;
+  --ach-surface: #121a33;
+  --ach-surface-2: #18223f;
+  --ach-text: #e8ecf8;
+  --ach-text-2: #a8b3d6;
+  --ach-primary: #8fb2ff;
+  --ach-on-primary: #0b1020;
+  --ach-accent: #4fd1e8;
+  --ach-outline: #7c88b0;
+  --ach-error: #ffb4ab;
+  --ach-success: #7ad9a3;
+  --ach-warning: #ffc857;
+  --ach-focus: #8fb2ff;
+}
+
+:root[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark-tokens;
+  }
+}

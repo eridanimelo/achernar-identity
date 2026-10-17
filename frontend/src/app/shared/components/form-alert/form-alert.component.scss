@@ -1,0 +1,40 @@
+.alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ach-error);
+  border-radius: var(--ach-radius-field);
+  color: var(--ach-error);
+  background: color-mix(in srgb, var(--ach-error) 8%, var(--ach-surface));
+
+  &.info {
+    border-color: var(--ach-primary);
+    color: var(--ach-text);
+    background: color-mix(in srgb, var(--ach-primary) 8%, var(--ach-surface));
+  }
+}
+
+.msg {
+  margin: 0;
+  font-weight: 500;
+}
+
+.trace {
+  margin: 4px 0 0;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.body {
+  flex: 1;
+  color: var(--ach-text);
+}
+
+.alert:not(.info) .msg {
+  color: var(--ach-error);
+}

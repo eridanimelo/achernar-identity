@@ -1,0 +1,34 @@
+<app-page-header [title]="'security.title' | transloco" [subtitle]="'security.subtitle' | transloco" />
+
+@if (alert(); as a) {
+  <app-form-alert [message]="alertMessage()" [traceId]="a.traceId" />
+}
+
+@if (account(); as acc) {
+  <div class="sections">
+    <app-password-section
+      [hasPassword]="acc.has_password"
+      [busy]="busyPassword()"
+      [failure]="passwordFailure()"
+      (submitted)="changePassword($event)"
+    />
+    <p class="muted note">{{ 'security.password.otherSessions' | transloco }}</p>
+
+    <app-email-section
+      [currentEmail]="acc.email"
+      [busy]="busyEmail()"
+      [sent]="emailSent()"
+      [failure]="emailFailure()"
+      (submitted)="changeEmail($event)"
+    />
+
+    <app-social-links-section
+      [links]="acc.social_links"
+      [available]="available()"
+      [hasPassword]="acc.has_password"
+      [busy]="busySocial()"
+      (link)="link($event)"
+      (unlink)="unlink($event)"
+    />
+  </div>
+}

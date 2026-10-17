@@ -1,0 +1,37 @@
+<app-auth-layout [title]="'auth.login.title' | transloco" [subtitle]="'auth.login.subtitle' | transloco">
+  <form class="form-column" [formGroup]="form" (ngSubmit)="submit()" appFocusInvalid novalidate>
+    @if (failure(); as f) {
+      <app-form-alert [message]="failureMessage()" [traceId]="f.traceId" />
+      @if (unverified()) {
+        <p><a routerLink="/resend-verification">{{ 'auth.resendLink' | transloco }}</a></p>
+      }
+    }
+    @if (blocked()) {
+      <p class="muted" role="status">{{ 'common.retryIn' | transloco: { seconds: wait() } }}</p>
+    }
+    <app-text-field
+      name="email"
+      type="email"
+      inputmode="email"
+      autocomplete="username"
+      [maxlength]="254"
+      [control]="form.controls.email"
+      [label]="'auth.email' | transloco"
+      [required]="true"
+    />
+    <app-password-field name="password" [control]="form.controls.password" [label]="'auth.password' | transloco" autocomplete="current-password" />
+    <div class="actions">
+      <button mat-flat-button type="submit" [disabled]="busy() || blocked()" [attr.aria-busy]="busy()">
+        @if (busy()) {
+          <mat-spinner diameter="18" />
+        }
+        {{ 'auth.signIn' | transloco }}
+      </button>
+      <a routerLink="/forgot-password">{{ 'auth.forgot' | transloco }}</a>
+    </div>
+    <app-social-buttons [providers]="providers()" [disabled]="busy()" (selected)="withProvider($event)" />
+    @if (canRegister()) {
+      <p class="register">{{ 'auth.noAccount' | transloco }} <a routerLink="/register">{{ 'auth.register' | transloco }}</a></p>
+    }
+  </form>
+</app-auth-layout>

@@ -1,0 +1,21 @@
+<div class="split">
+  <aside class="panel" aria-hidden="true">
+    <app-brand />
+    <p class="tagline">{{ 'brand.tagline' | transloco }}</p>
+    <svg class="stars" viewBox="0 0 200 200" focusable="false">
+      <g fill="currentColor">
+        <circle cx="30" cy="40" r="1.4" /><circle cx="150" cy="25" r="1" /><circle cx="90" cy="95" r="1.8" />
+        <circle cx="170" cy="120" r="1.2" /><circle cx="45" cy="160" r="1" /><circle cx="120" cy="175" r="1.6" />
+        <path d="M100 60l3 10 10 3-10 3-3 10-3-10-10-3 10-3z" />
+      </g>
+    </svg>
+  </aside>
+  <section class="card" aria-labelledby="page-title">
+    <div class="mobile-brand"><app-brand /></div>
+    <h1 id="page-title" tabindex="-1">{{ title() }}</h1>
+    @if (subtitle()) {
+      <p class="muted lead">{{ subtitle() }}</p>
+    }
+    <ng-content />
+  </section>
+</div>

@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100vh - 120px);
+}
+
+.panel {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  color: #e8ecf8;
+  background: linear-gradient(160deg, #0b1020 0%, #14267a 55%, #1d4ed8 100%);
+  padding: 48px;
+
+  .tagline {
+    margin-top: 24px;
+    font-family: var(--ach-font-title);
+    font-size: 28px;
+    line-height: 36px;
+    max-width: 16ch;
+  }
+
+  .stars {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 320px;
+    opacity: 0.5;
+    color: #cfe0ff;
+  }
+}
+
+.card {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 480px;
+  padding: 24px 16px 32px;
+}
+
+.mobile-brand {
+  margin-bottom: 24px;
+}
+
+.lead {
+  margin: -4px 0 20px;
+}
+
+@media (min-width: 840px) {
+  .split {
+    grid-template-columns: minmax(320px, 5fr) 6fr;
+  }
+
+  .panel {
+    display: block;
+  }
+
+  .mobile-brand {
+    display: none;
+  }
+
+  .card {
+    padding: 48px;
+  }
+}

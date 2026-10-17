@@ -20,13 +20,13 @@ artifacts:
 gates:
   context: pass
   analysis: pass
-  authorization: pass   # autorização de especificação; GATE-AUT de implementação NÃO concedido
+  authorization: pass   # GATE-AUT de implementação concedido em 2026-10-17 (prompt do usuário)
   quality: pending
   closure: pending
 
 implementation:
-  backend: not_started
-  frontend: not_started
+  backend: implemented_unverified   # código e testes escritos; NÃO compilado com Maven nem executado contra PostgreSQL (ver implementation-decisions.md §4)
+  frontend: implemented       # ng build, ng lint e Vitest executados com sucesso; sem E2E contra backend real
 
 open_questions: []
 

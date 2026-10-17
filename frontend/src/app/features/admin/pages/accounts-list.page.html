@@ -1,0 +1,91 @@
+<app-page-header [title]="'admin.accounts.title' | transloco" [subtitle]="'admin.accounts.subtitle' | transloco" />
+
+<form class="filters" [formGroup]="filters" (ngSubmit)="apply()" role="search">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.accounts.search' | transloco }}</mat-label>
+    <input matInput formControlName="q" name="q" type="search" autocomplete="off" maxlength="254" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'account.statusLabel' | transloco }}</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="">{{ 'common.all' | transloco }}</mat-option>
+      @for (s of ['ACTIVE', 'PENDING_VERIFICATION', 'DISABLED']; track s) {
+        <mat-option [value]="s">{{ 'account.status.' + s | transloco }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'account.roleLabel' | transloco }}</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="">{{ 'common.all' | transloco }}</mat-option>
+      <mat-option value="USER">{{ 'account.role.USER' | transloco }}</mat-option>
+      <mat-option value="ADMIN">{{ 'account.role.ADMIN' | transloco }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'account.methods' | transloco }}</mat-label>
+    <mat-select formControlName="method">
+      <mat-option value="">{{ 'common.all' | transloco }}</mat-option>
+      <mat-option value="password">{{ 'account.method.password' | transloco }}</mat-option>
+      <mat-option value="google">{{ 'social.google' | transloco }}</mat-option>
+      <mat-option value="facebook">{{ 'social.facebook' | transloco }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="actions">
+    <button mat-flat-button type="submit">{{ 'common.filter' | transloco }}</button>
+    <button mat-button type="button" (click)="clear()">{{ 'common.clear' | transloco }}</button>
+  </div>
+</form>
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+  <button mat-stroked-button type="button" (click)="load()">{{ 'common.retry' | transloco }}</button>
+}
+
+@if (loading() && !data()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="6" />
+} @else if (data(); as page) {
+  @if (page.items.length === 0) {
+    <app-empty-state icon="group_off" [title]="'admin.accounts.empty' | transloco" />
+  } @else {
+    <div class="table-scroll">
+      <table mat-table [dataSource]="page.items">
+        <caption class="sr-only">{{ 'admin.accounts.title' | transloco }}</caption>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'auth.email' | transloco }}</th>
+          <td mat-cell *matCellDef="let a"><a [routerLink]="['/admin/accounts', a.id]">{{ a.email }}</a></td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'account.statusLabel' | transloco }}</th>
+          <td mat-cell *matCellDef="let a"><app-status-chip [tone]="tone(a.status)" [label]="'account.status.' + a.status | transloco" /></td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'account.roleLabel' | transloco }}</th>
+          <td mat-cell *matCellDef="let a">{{ 'account.role.' + a.role | transloco }}</td>
+        </ng-container>
+        <ng-container matColumnDef="methods">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'account.methods' | transloco }}</th>
+          <td mat-cell *matCellDef="let a">
+            @if (a.has_password) { {{ 'account.method.password' | transloco }} }
+            @for (p of a.providers; track p) { {{ 'social.' + p | transloco }} }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef scope="col">{{ 'account.createdAt' | transloco }}</th>
+          <td mat-cell *matCellDef="let a">{{ a.created_at | localDate: 'date' }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" (dblclick)="open(row)"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [length]="page.total"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex()"
+      [hidePageSize]="true"
+      [showFirstLastButtons]="true"
+      (page)="paged($event)"
+      [attr.aria-label]="'common.pagination' | transloco"
+    />
+  }
+}

@@ -1,0 +1,55 @@
+.fields {
+  display: grid;
+  gap: 24px;
+  max-width: 720px;
+}
+
+.block {
+  margin: 0;
+  padding: 20px 24px 8px;
+  border: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+  border-radius: var(--ach-radius-card);
+  background: var(--ach-surface);
+  display: grid;
+  gap: 8px;
+
+  legend {
+    padding: 0 8px;
+    font-family: var(--ach-font-title);
+    font-weight: 700;
+  }
+}
+
+.narrow {
+  max-width: 360px;
+}
+
+.aud {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+.link {
+  background: none;
+  border: 0;
+  padding: 4px;
+  color: var(--ach-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+mat-slide-toggle {
+  display: block;
+  margin-bottom: 8px;
+}

@@ -1,0 +1,31 @@
+<a routerLink="/admin/applications" class="back">← {{ 'admin.apps.title' | transloco }}</a>
+<app-page-header [title]="title()" [subtitle]="(isNew() ? 'admin.apps.newSubtitle' : 'admin.apps.editSubtitle') | transloco" />
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+  @if (f.status === 409 && !isNew()) {
+    <button mat-stroked-button type="button" (click)="load()">{{ 'common.reload' | transloco }}</button>
+  }
+}
+
+@if (loading()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="8" />
+} @else {
+  <form [formGroup]="form" (ngSubmit)="save()" appFocusInvalid novalidate>
+    <app-application-fields [form]="form" [isNew]="isNew()" [apis]="apis()" (addApi)="addApi($event)" (removeApi)="removeApi($event)" />
+    <div class="actions bar">
+      <button mat-flat-button type="submit" [disabled]="busy()" [attr.aria-busy]="busy()">
+        @if (busy()) {
+          <mat-spinner diameter="18" />
+        }
+        {{ 'common.save' | transloco }}
+      </button>
+      <a mat-button routerLink="/admin/applications">{{ 'common.cancel' | transloco }}</a>
+    </div>
+  </form>
+
+  @if (!isNew() && isConfidential()) {
+    <app-secrets-section [title]="'secrets.appTitle' | transloco" [rows]="app()?.secrets ?? []" [busy]="busy()"
+      (generate)="generateSecret()" (revoke)="revokeSecret($event)" />
+  }
+}

@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.global-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 2000;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+
+  &.offline {
+    background: var(--ach-surface-2);
+    color: var(--ach-text);
+  }
+
+  &.unavailable {
+    background: color-mix(in srgb, var(--ach-warning) 14%, var(--ach-surface));
+    color: var(--ach-text);
+    border-bottom: 1px solid var(--ach-warning);
+  }
+}
+
+.container {
+  min-height: 100vh;
+  background: var(--ach-bg);
+}
+
+.sidenav {
+  width: 264px;
+  background: var(--ach-surface);
+  border-right: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+}
+
+.nav-heading {
+  margin: 16px 16px 4px;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ach-text-2);
+  font-family: var(--ach-font-body);
+}
+
+a.active {
+  background: color-mix(in srgb, var(--ach-primary) 12%, transparent);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--ach-surface);
+  border-bottom: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: var(--ach-text);
+}
+
+.brand-link {
+  color: inherit;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.email {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 599px) {
+  .email {
+    display: none;
+  }
+}
+
+.main {
+  flex: 1;
+  padding: 24px 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.footer {
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--ach-outline) 25%, transparent);
+}

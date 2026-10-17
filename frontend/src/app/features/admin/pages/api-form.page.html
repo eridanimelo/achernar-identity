@@ -1,0 +1,40 @@
+<a routerLink="/admin/apis" class="back">← {{ 'admin.apis.title' | transloco }}</a>
+<app-page-header [title]="title()" [subtitle]="(isNew() ? 'admin.apis.newSubtitle' : 'admin.apis.editSubtitle') | transloco" />
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+}
+
+@if (loading()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="5" />
+} @else {
+  <form class="form-column" [formGroup]="form" (ngSubmit)="save()" appFocusInvalid novalidate>
+    <app-text-field name="audience" [control]="form.controls.audience" label="audience" [required]="true" [maxlength]="200"
+      [hint]="'admin.apis.audienceHint' | transloco" autocomplete="off" />
+    <app-text-field name="name" [control]="form.controls.name" [label]="'admin.apps.name' | transloco" [required]="true" [maxlength]="100" />
+    <app-text-field name="description" [control]="form.controls.description" [label]="'admin.apps.description' | transloco" [maxlength]="500" />
+    @if (!isNew()) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'account.statusLabel' | transloco }}</mat-label>
+        <mat-select formControlName="status" name="status">
+          <mat-option value="ACTIVE">{{ 'registry.status.ACTIVE' | transloco }}</mat-option>
+          <mat-option value="DISABLED">{{ 'registry.status.DISABLED' | transloco }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+    <div class="actions bar">
+      <button mat-flat-button type="submit" [disabled]="busy()" [attr.aria-busy]="busy()">
+        @if (busy()) {
+          <mat-spinner diameter="18" />
+        }
+        {{ 'common.save' | transloco }}
+      </button>
+      <a mat-button routerLink="/admin/apis">{{ 'common.cancel' | transloco }}</a>
+    </div>
+  </form>
+
+  @if (!isNew()) {
+    <app-secrets-section [title]="'secrets.apiTitle' | transloco" [rows]="current()?.credentials ?? []" [busy]="busy()"
+      (generate)="generateCredential()" (revoke)="revokeCredential($event)" />
+  }
+}

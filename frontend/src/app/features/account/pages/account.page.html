@@ -1,0 +1,49 @@
+<app-page-header [title]="'account.title' | transloco" [subtitle]="'account.subtitle' | transloco" />
+
+@if (failure(); as msg) {
+  <app-form-alert [message]="msg" [traceId]="trace()" />
+  <button mat-stroked-button type="button" (click)="reload()">{{ 'common.retry' | transloco }}</button>
+} @else if (loading() || !session.account()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="6" />
+} @else {
+  @let acc = session.account()!;
+  <mat-card appearance="outlined" class="card">
+    <mat-card-content>
+      <dl class="grid">
+        <div><dt>{{ 'auth.email' | transloco }}</dt><dd>{{ acc.email }}</dd></div>
+        <div>
+          <dt>{{ 'account.emailStatus' | transloco }}</dt>
+          <dd>
+            <app-status-chip
+              [tone]="acc.email_verified ? 'success' : 'warning'"
+              [label]="(acc.email_verified ? 'account.verified' : 'account.unverified') | transloco"
+            />
+          </dd>
+        </div>
+        <div>
+          <dt>{{ 'account.statusLabel' | transloco }}</dt>
+          <dd><app-status-chip [tone]="statusTone(acc.status)" [label]="('account.status.' + acc.status) | transloco" /></dd>
+        </div>
+        <div><dt>{{ 'account.roleLabel' | transloco }}</dt><dd>{{ ('account.role.' + acc.role) | transloco }}</dd></div>
+        <div>
+          <dt>{{ 'account.methods' | transloco }}</dt>
+          <dd>
+            <ul class="methods">
+              @if (acc.has_password) {
+                <li>{{ 'account.method.password' | transloco }}</li>
+              }
+              @for (l of acc.social_links; track l.provider) {
+                <li>{{ ('social.' + l.provider) | transloco }} · {{ l.linked_at | localDate: 'date' }}</li>
+              }
+            </ul>
+          </dd>
+        </div>
+        <div><dt>{{ 'account.createdAt' | transloco }}</dt><dd>{{ acc.created_at | localDate }}</dd></div>
+      </dl>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-flat-button routerLink="/account/security">{{ 'nav.security' | transloco }}</a>
+      <a mat-stroked-button routerLink="/account/sessions">{{ 'nav.sessions' | transloco }}</a>
+    </mat-card-actions>
+  </mat-card>
+}
