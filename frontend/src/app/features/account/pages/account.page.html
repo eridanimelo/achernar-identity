@@ -7,43 +7,51 @@
   <app-skeleton [label]="'common.loading' | transloco" [lines]="6" />
 } @else {
   @let acc = session.account()!;
-  <mat-card appearance="outlined" class="card">
+  <mat-card appearance="outlined" class="profile-card">
     <mat-card-content>
+      <div class="profile-hero">
+        <span class="profile-avatar"><mat-icon aria-hidden="true">person</mat-icon></span>
+        <div class="profile-identity">
+          <span class="eyebrow">{{ 'account.profile' | transloco }}</span>
+          <h2>{{ acc.email }}</h2>
+        </div>
+        <app-status-chip [tone]="statusTone(acc.status)" [label]="('account.status.' + acc.status) | transloco" />
+      </div>
       <dl class="grid">
-        <div><dt>{{ 'auth.email' | transloco }}</dt><dd>{{ acc.email }}</dd></div>
         <div>
-          <dt>{{ 'account.emailStatus' | transloco }}</dt>
-          <dd>
-            <app-status-chip
-              [tone]="acc.email_verified ? 'success' : 'warning'"
-              [label]="(acc.email_verified ? 'account.verified' : 'account.unverified') | transloco"
-            />
-          </dd>
+          <dt><mat-icon aria-hidden="true">verified</mat-icon>{{ 'account.emailStatus' | transloco }}</dt>
+          <dd><app-status-chip [tone]="acc.email_verified ? 'success' : 'warning'" [label]="(acc.email_verified ? 'account.verified' : 'account.unverified') | transloco" /></dd>
         </div>
         <div>
-          <dt>{{ 'account.statusLabel' | transloco }}</dt>
-          <dd><app-status-chip [tone]="statusTone(acc.status)" [label]="('account.status.' + acc.status) | transloco" /></dd>
+          <dt><mat-icon aria-hidden="true">admin_panel_settings</mat-icon>{{ 'account.roleLabel' | transloco }}</dt>
+          <dd>{{ ('account.role.' + acc.role) | transloco }}</dd>
         </div>
-        <div><dt>{{ 'account.roleLabel' | transloco }}</dt><dd>{{ ('account.role.' + acc.role) | transloco }}</dd></div>
         <div>
-          <dt>{{ 'account.methods' | transloco }}</dt>
-          <dd>
-            <ul class="methods">
-              @if (acc.has_password) {
-                <li>{{ 'account.method.password' | transloco }}</li>
-              }
-              @for (l of acc.social_links; track l.provider) {
-                <li>{{ ('social.' + l.provider) | transloco }} · {{ l.linked_at | localDate: 'date' }}</li>
-              }
-            </ul>
-          </dd>
+          <dt><mat-icon aria-hidden="true">fingerprint</mat-icon>{{ 'account.methods' | transloco }}</dt>
+          <dd><ul class="methods">
+            @if (acc.has_password) { <li>{{ 'account.method.password' | transloco }}</li> }
+            @for (l of acc.social_links; track l.provider) {
+              <li>{{ ('social.' + l.provider) | transloco }} · {{ l.linked_at | localDate: 'date' }}</li>
+            }
+          </ul></dd>
         </div>
-        <div><dt>{{ 'account.createdAt' | transloco }}</dt><dd>{{ acc.created_at | localDate }}</dd></div>
+        <div>
+          <dt><mat-icon aria-hidden="true">calendar_today</mat-icon>{{ 'account.createdAt' | transloco }}</dt>
+          <dd>{{ acc.created_at | localDate }}</dd>
+        </div>
       </dl>
     </mat-card-content>
-    <mat-card-actions>
-      <a mat-flat-button routerLink="/account/security">{{ 'nav.security' | transloco }}</a>
-      <a mat-stroked-button routerLink="/account/sessions">{{ 'nav.sessions' | transloco }}</a>
-    </mat-card-actions>
   </mat-card>
+  <div class="quick-actions">
+    <a class="quick-action" routerLink="/account/security">
+      <span class="action-icon"><mat-icon aria-hidden="true">shield</mat-icon></span>
+      <span class="action-copy"><strong>{{ 'nav.security' | transloco }}</strong><span>{{ 'account.securityHint' | transloco }}</span></span>
+      <mat-icon class="action-arrow" aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+    <a class="quick-action" routerLink="/account/sessions">
+      <span class="action-icon violet"><mat-icon aria-hidden="true">devices</mat-icon></span>
+      <span class="action-copy"><strong>{{ 'nav.sessions' | transloco }}</strong><span>{{ 'account.sessionsHint' | transloco }}</span></span>
+      <mat-icon class="action-arrow" aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+  </div>
 }

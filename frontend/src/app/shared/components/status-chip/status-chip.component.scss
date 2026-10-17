@@ -4,7 +4,8 @@
   gap: 4px;
   padding: 2px 10px 2px 6px;
   border-radius: 999px;
-  border: 1px solid currentColor;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
   font-size: 14px;
   line-height: 20px;
   white-space: nowrap;

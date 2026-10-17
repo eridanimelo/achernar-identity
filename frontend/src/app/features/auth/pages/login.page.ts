@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, si
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
@@ -27,7 +28,7 @@ import { AuthApiService } from '../services/auth-api.service';
   selector: 'app-login-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ReactiveFormsModule, RouterLink, MatButtonModule, MatProgressSpinnerModule, TranslocoPipe, FocusInvalidDirective,
+    ReactiveFormsModule, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, TranslocoPipe, FocusInvalidDirective,
     AuthLayoutComponent, FormAlertComponent, PasswordFieldComponent, TextFieldComponent, SocialButtonsComponent,
   ],
   templateUrl: './login.page.html',

@@ -454,5 +454,10 @@
   "validation.tooLong": "Use at most {{max}} characters.",
   "validation.tooMany": "Too many items.",
   "validation.tooShort": "Use at least {{min}} characters.",
-  "validation.url": "Enter a valid URL (https)."
+  "validation.url": "Enter a valid URL (https).",
+  "brand.workspace": "Identity workspace",
+  "account.profile": "Your profile",
+  "account.securityHint": "Password, email and sign-in methods.",
+  "account.sessionsHint": "View and manage your connected devices.",
+  "shell.accountMenu": "Account menu"
 }

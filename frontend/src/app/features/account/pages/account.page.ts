@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { SessionService } from '../../../core/auth/session.service';
 import { toApiError } from '../../../core/http/api-error';
@@ -16,7 +17,7 @@ import { LocalDatePipe } from '../../../shared/pipes/local-date.pipe';
 @Component({
   selector: 'app-account-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, MatButtonModule, MatCardModule, TranslocoPipe, LocalDatePipe, FormAlertComponent, PageHeaderComponent, SkeletonComponent, StatusChipComponent],
+  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule, TranslocoPipe, LocalDatePipe, FormAlertComponent, PageHeaderComponent, SkeletonComponent, StatusChipComponent],
   templateUrl: './account.page.html',
   styleUrl: './account.page.scss',
 })

@@ -22,10 +22,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       gap: 12px 24px;
       align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 28px;
     }
     h1 {
-      font-size: 24px;
+      font-size: clamp(26px, 3vw, 32px);
+      line-height: 1.25;
+      letter-spacing: -0.035em;
       margin: 0;
     }
     .sub {

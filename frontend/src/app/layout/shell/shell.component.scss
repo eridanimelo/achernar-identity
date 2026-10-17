@@ -34,13 +34,18 @@
 }
 
 .sidenav {
-  width: 264px;
+  width: 256px;
   background: var(--ach-surface);
-  border-right: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+  border-right: 1px solid var(--ach-border);
+  border-radius: 0;
+
+  nav { padding: 12px; }
+  mat-nav-list { padding: 0; }
+  a { margin-bottom: 4px; border-radius: 12px; }
 }
 
 .nav-heading {
-  margin: 16px 16px 4px;
+  margin: 28px 16px 12px;
   font-size: 12px;
   line-height: 16px;
   text-transform: uppercase;
@@ -50,7 +55,10 @@
 }
 
 a.active {
-  background: color-mix(in srgb, var(--ach-primary) 12%, transparent);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--ach-primary) 16%, transparent), color-mix(in srgb, var(--ach-violet) 10%, transparent));
+  box-shadow: inset 3px 0 var(--ach-primary);
+  --mat-list-list-item-label-text-color: var(--ach-primary);
+  --mat-list-list-item-leading-icon-color: var(--ach-primary);
 }
 
 .content {
@@ -63,9 +71,9 @@ a.active {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 12px 28px;
   background: var(--ach-surface);
-  border-bottom: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+  border-bottom: 1px solid var(--ach-border);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -99,9 +107,9 @@ a.active {
 
 .main {
   flex: 1;
-  padding: 24px 16px;
+  padding: 40px 32px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
 
   &:focus {
@@ -114,4 +122,66 @@ a.active {
   text-align: center;
   font-size: 14px;
   border-top: 1px solid color-mix(in srgb, var(--ach-outline) 25%, transparent);
+}
+
+@media (max-width: 839px) {
+  .header { padding: 10px 12px; gap: 4px; }
+  .main { padding: 24px 16px; }
+}
+
+@media (max-width: 399px) {
+  .header { padding-inline: 4px; }
+  .brand-link { max-width: 148px; }
+}
+
+.sidebar-brand {
+  display: flex;
+  justify-content: center;
+  margin: 16px 12px 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ach-border);
+}
+.workspace-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+.workspace-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--ach-primary);
+  background: var(--ach-primary-container);
+  border-radius: 11px;
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+}
+.header { min-height: 80px; }
+.sidenav a[mat-list-item] {
+  transition: background 180ms ease, transform 180ms ease;
+  &:hover { transform: translateX(3px); }
+}
+.container {
+  background: radial-gradient(ellipse at 85% 0%, color-mix(in srgb, var(--ach-violet) 5%, transparent), transparent 55%), var(--ach-bg);
+}
+.user-btn {
+  border: 1px solid var(--ach-border);
+  border-radius: 12px;
+  padding-inline: 14px;
+}
+@media (max-width: 599px) {
+  .header { min-height: 72px; }
+  .user-btn { padding-inline: 8px; min-width: 44px; }
+}
+
+@media (max-width: 399px) {
+  .header { gap: 0; padding-inline: 4px; }
+  .brand-link { max-width: 132px; min-width: 0; }
+  .user-btn, app-preferences-menu { flex-shrink: 0; }
+}
+@media (max-width: 359px) {
+  .brand-link { max-width: 104px; }
 }

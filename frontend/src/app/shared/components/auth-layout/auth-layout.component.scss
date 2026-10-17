@@ -1,69 +1,96 @@
-:host {
-  display: block;
-}
+:host { display: block; }
 
 .split {
   display: grid;
-  grid-template-columns: 1fr;
-  min-height: calc(100vh - 120px);
+  grid-template-columns: minmax(0, 1fr);
+  min-height: calc(100dvh - 220px);
+  gap: 32px;
 }
 
 .panel {
   display: none;
   position: relative;
   overflow: hidden;
-  color: #e8ecf8;
-  background: linear-gradient(160deg, #0b1020 0%, #14267a 55%, #1d4ed8 100%);
-  padding: 48px;
+  isolation: isolate;
+  color: var(--ach-brand-ink);
+  background:
+    radial-gradient(ellipse at 10% 100%, color-mix(in srgb, var(--ach-brand-violet) 24%, transparent), transparent 65%),
+    radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--ach-brand-cyan) 14%, transparent), transparent 55%),
+    var(--ach-brand-night);
+  padding: 48px 40px;
+  border-radius: 24px;
+  border: 1px solid var(--ach-border);
 
+  app-brand { width: 100%; transform: scale(1.15); transform-origin: left top; }
   .tagline {
-    margin-top: 24px;
+    margin-top: 64px;
     font-family: var(--ach-font-title);
-    font-size: 28px;
-    line-height: 36px;
-    max-width: 16ch;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    max-width: 15ch;
   }
-
   .stars {
     position: absolute;
-    right: -20px;
-    bottom: -20px;
+    right: -32px;
+    bottom: -48px;
     width: 320px;
-    opacity: 0.5;
-    color: #cfe0ff;
+    opacity: 0.45;
+    color: var(--ach-brand-violet);
+    z-index: -1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    width: 360px;
+    height: 180px;
+    bottom: 40px;
+    left: -80px;
+    border: 1px solid color-mix(in srgb, var(--ach-brand-cyan) 30%, transparent);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+    z-index: -1;
   }
 }
 
 .card {
   align-self: center;
   justify-self: center;
+  min-width: 0;
   width: 100%;
   max-width: 480px;
-  padding: 24px 16px 32px;
+  padding: 32px 24px;
+  background: var(--ach-surface);
+  border: 1px solid var(--ach-border);
+  border-radius: var(--ach-radius-card);
+  box-shadow: var(--ach-shadow);
 }
-
-.mobile-brand {
-  margin-bottom: 24px;
-}
-
-.lead {
-  margin: -4px 0 20px;
-}
+.mobile-brand { margin-bottom: 28px; }
+.lead { margin: -4px 0 24px; }
 
 @media (min-width: 840px) {
-  .split {
-    grid-template-columns: minmax(320px, 5fr) 6fr;
-  }
-
-  .panel {
-    display: block;
-  }
-
-  .mobile-brand {
-    display: none;
-  }
-
-  .card {
-    padding: 48px;
-  }
+  .split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .panel { display: block; }
+  .mobile-brand { display: none; }
+  .card { padding: 40px 32px; }
 }
+
+@media (max-width: 399px) {
+  .card { padding: 24px 16px; }
+}
+
+.brand-orbit {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border: 1px solid color-mix(in srgb, var(--ach-brand-violet) 40%, transparent);
+  border-radius: 50%;
+  right: -60px;
+  bottom: 36px;
+  transform: rotate(-25deg);
+}
+.orbit-core { position: absolute; inset: 46px; border-radius: 50%; background: radial-gradient(circle at 30% 20%, var(--ach-brand-cyan), var(--ach-violet) 65%, var(--ach-brand-night)); opacity: 0.7; box-shadow: 0 0 70px color-mix(in srgb, var(--ach-violet) 20%, transparent); }
+.orbit-moon { position: absolute; inset: 0; animation: orbital-turn 28s linear infinite; }
+.orbit-moon::after { content: ''; position: absolute; width: 14px; height: 14px; left: calc(50% - 7px); top: -7px; background: var(--ach-brand-cyan); border-radius: 50%; box-shadow: 0 0 18px color-mix(in srgb, var(--ach-brand-cyan) 60%, transparent); }
+@keyframes orbital-turn { to { transform: rotate(360deg); } }

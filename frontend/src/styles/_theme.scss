@@ -28,6 +28,10 @@ html[data-theme='dark'] {
 html {
   --mat-sys-primary: var(--ach-primary);
   --mat-sys-on-primary: var(--ach-on-primary);
+  --mat-sys-primary-container: var(--ach-primary-container);
+  --mat-sys-on-primary-container: var(--ach-text);
+  --mat-sys-secondary: var(--ach-violet);
+  --mat-sys-tertiary: var(--ach-accent);
   --mat-sys-background: var(--ach-bg);
   --mat-sys-surface: var(--ach-surface);
   --mat-sys-on-surface: var(--ach-text);
@@ -38,4 +42,7 @@ html {
   --mat-sys-outline: var(--ach-outline);
   --mat-sys-error: var(--ach-error);
   --mat-sys-corner-extra-large: var(--ach-radius-dialog);
+  --mat-form-field-outlined-container-shape: var(--ach-radius-field);
+  --mat-button-filled-container-shape: var(--ach-radius-field);
+  --mat-button-outlined-container-shape: var(--ach-radius-field);
 }

@@ -20,12 +20,13 @@
       [required]="true"
     />
     <app-password-field name="password" [control]="form.controls.password" [label]="'auth.password' | transloco" autocomplete="current-password" />
-    <div class="actions">
+    <div class="actions login-actions">
       <button mat-flat-button type="submit" [disabled]="busy() || blocked()" [attr.aria-busy]="busy()">
         @if (busy()) {
           <mat-spinner diameter="18" />
         }
         {{ 'auth.signIn' | transloco }}
+        @if (!busy()) { <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon> }
       </button>
       <a routerLink="/forgot-password">{{ 'auth.forgot' | transloco }}</a>
     </div>

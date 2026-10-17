@@ -1,20 +1,30 @@
-// Tokens de cor (visual-proposal §2). O Material 3 é mapeado sobre eles em _theme.scss.
+// Paleta da marca fornecida pelo usuário: azul orbital, ciano e violeta.
 :root {
-  --ach-bg: #f6f8fe;
+  --ach-bg: #f4f6fc;
   --ach-surface: #ffffff;
-  --ach-surface-2: #edf1fc;
-  --ach-text: #0e1630;
-  --ach-text-2: #4a5578;
-  --ach-primary: #1d4ed8;
+  --ach-surface-2: #eaf0fc;
+  --ach-text: #15203b;
+  --ach-text-2: #52607b;
+  --ach-primary: #2454d8;
   --ach-on-primary: #ffffff;
-  --ach-accent: #0e7c93;
-  --ach-outline: #6b7599;
+  --ach-primary-container: #e1eaff;
+  --ach-accent: #087995;
+  --ach-violet: #713cbb;
+  --ach-outline: #74819b;
+  --ach-border: #dce3f0;
   --ach-error: #b3261e;
   --ach-success: #1b6e43;
   --ach-warning: #7a5200;
-  --ach-focus: #1d4ed8;
+  --ach-focus: #2454d8;
+  --ach-brand-night: #080b16;
+  --ach-logo-surface: #080b16;
+  --ach-brand-ink: #f1f5ff;
+  --ach-brand-cyan: #64d6f5;
+  --ach-brand-violet: #ac91ff;
+  --ach-brand-gradient: linear-gradient(115deg, #64d6f5, #356bff 52%, #a56bff);
+  --ach-shadow: 0 16px 48px #15203b0d;
   --ach-radius-field: 12px;
-  --ach-radius-card: 16px;
+  --ach-radius-card: 20px;
   --ach-radius-dialog: 24px;
   --ach-font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --ach-font-title: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -22,19 +32,24 @@
 }
 
 @mixin dark-tokens {
-  --ach-bg: #0b1020;
-  --ach-surface: #121a33;
-  --ach-surface-2: #18223f;
-  --ach-text: #e8ecf8;
-  --ach-text-2: #a8b3d6;
-  --ach-primary: #8fb2ff;
-  --ach-on-primary: #0b1020;
-  --ach-accent: #4fd1e8;
-  --ach-outline: #7c88b0;
+  --ach-logo-surface: transparent;
+  --ach-bg: #080b16;
+  --ach-surface: #101727;
+  --ach-surface-2: #182238;
+  --ach-text: #edf2ff;
+  --ach-text-2: #a7b5cf;
+  --ach-primary: #88b8ff;
+  --ach-on-primary: #0c1832;
+  --ach-primary-container: #203559;
+  --ach-accent: #64d6f5;
+  --ach-violet: #ac91ff;
+  --ach-outline: #7e8da9;
+  --ach-border: #29344c;
   --ach-error: #ffb4ab;
   --ach-success: #7ad9a3;
   --ach-warning: #ffc857;
-  --ach-focus: #8fb2ff;
+  --ach-focus: #64d6f5;
+  --ach-shadow: 0 16px 48px #0000001a;
 }
 
 :root[data-theme='dark'] {
