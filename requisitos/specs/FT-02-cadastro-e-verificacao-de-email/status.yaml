@@ -1,0 +1,35 @@
+feature:
+  id: FT-02
+  name: Cadastro e verificação de e-mail
+  origin: NEW
+
+approval:
+  status: approved   # aprovação documental sob delegação do prompt de 2026-10-16; não autoriza implementação
+
+artifacts:
+  context_manifest: done
+  business: done
+  api: done
+  database: done
+  frontend: done
+  security: done
+  tests: done
+  evidence: not_applicable
+  migration: not_applicable
+
+gates:
+  context: pass
+  analysis: pass
+  authorization: pass   # autorização de especificação; GATE-AUT de implementação NÃO concedido
+  quality: pending
+  closure: pending
+
+implementation:
+  backend: not_started
+  frontend: not_started
+
+open_questions: []
+
+jira:
+  issueKey: null
+  synced: false

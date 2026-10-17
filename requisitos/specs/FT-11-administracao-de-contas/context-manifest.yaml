@@ -1,0 +1,83 @@
+# Manifesto de contexto — FT-11. Registro retrospectivo do que fundamentou a Spec.
+execution:
+  intent: FULL_SPEC
+  stage: SPEC
+  feature: FT-11
+  status: completed
+
+files:
+  - path: .ia/AGENTS.md
+    reason: regras do orquestrador
+    artifact: workflow
+    required: true
+  - path: requisitos/discovery/use-cases.md
+    reason: UCs, perfis e dependências da feature
+    artifact: business.md
+    required: true
+  - path: requisitos/specs/_shared/requirements.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/business-rules.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/decisions.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/parameters.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/error-catalog.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/event-catalog.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/api-conventions.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/data-model.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/security-policy.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/token-lifecycle.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/social-login.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/emails.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/ui-map.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/architecture.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+  - path: requisitos/specs/_shared/test-plan.md
+    reason: IDs e regras compartilhadas referenciadas pela Spec
+    artifact: spec
+    required: true
+
+optional_files: []
+
+must_not_read:
+  - .ia/.env
+  - backend/**
+  - frontend/**
