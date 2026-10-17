@@ -1,0 +1,75 @@
+<a class="skip-link" href="#main" (click)="skipToContent($event)">{{ 'shell.skip' | transloco }}</a>
+
+@if (loading.visible()) {
+  <mat-progress-bar class="global-progress" mode="indeterminate" [attr.aria-label]="'common.loading' | transloco" />
+}
+
+@if (!conn.online()) {
+  <div class="banner offline" role="status"><mat-icon aria-hidden="true">cloud_off</mat-icon>{{ 'shell.offline' | transloco }}</div>
+}
+@if (conn.serviceUnavailable() && conn.online()) {
+  <div class="banner unavailable" role="alert">
+    <mat-icon aria-hidden="true">warning</mat-icon>
+    <span>{{ 'shell.unavailable' | transloco }}</span>
+    <button mat-button type="button" [disabled]="retrying()" (click)="retry()">{{ 'common.retry' | transloco }}</button>
+  </div>
+}
+
+<mat-sidenav-container class="container">
+  @if (showSidebar()) {
+    <mat-sidenav #drawer [mode]="wide() ? 'side' : 'over'" [opened]="wide()" [fixedInViewport]="!wide()" class="sidenav">
+      <nav [attr.aria-label]="'shell.navigation' | transloco">
+        <mat-nav-list>
+          @for (n of userNav; track n.path) {
+            <a mat-list-item [routerLink]="n.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
+              <mat-icon matListItemIcon aria-hidden="true">{{ n.icon }}</mat-icon>
+              <span matListItemTitle>{{ n.labelKey | transloco }}</span>
+            </a>
+          }
+          @if (session.isAdmin()) {
+            <h2 class="nav-heading">{{ 'nav.admin' | transloco }}</h2>
+            @for (n of adminNav; track n.path) {
+              <a mat-list-item [routerLink]="n.path" routerLinkActive="active" #rlb="routerLinkActive" [attr.aria-current]="rlb.isActive ? 'page' : null">
+                <mat-icon matListItemIcon aria-hidden="true">{{ n.icon }}</mat-icon>
+                <span matListItemTitle>{{ n.labelKey | transloco }}</span>
+              </a>
+            }
+          }
+        </mat-nav-list>
+      </nav>
+    </mat-sidenav>
+  }
+
+  <mat-sidenav-content class="content">
+    <header class="header" role="banner">
+      @if (showSidebar() && !wide()) {
+        <button mat-icon-button type="button" (click)="drawer?.toggle()" [attr.aria-label]="'shell.menu' | transloco">
+          <mat-icon aria-hidden="true">menu</mat-icon>
+        </button>
+      }
+      <a class="brand-link" routerLink="/" [attr.aria-label]="'shell.home' | transloco"><app-brand /></a>
+      <span class="spacer"></span>
+      <app-preferences-menu />
+      @if (session.isAuthenticated()) {
+        <button mat-button type="button" [matMenuTriggerFor]="userMenu" class="user-btn">
+          <mat-icon aria-hidden="true">account_circle</mat-icon>
+          <span class="email">{{ email() }}</span>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <a mat-menu-item routerLink="/account"><mat-icon aria-hidden="true">person</mat-icon>{{ 'nav.account' | transloco }}</a>
+          <a mat-menu-item routerLink="/account/security"><mat-icon aria-hidden="true">shield</mat-icon>{{ 'nav.security' | transloco }}</a>
+          <a mat-menu-item routerLink="/account/sessions"><mat-icon aria-hidden="true">devices</mat-icon>{{ 'nav.sessions' | transloco }}</a>
+          <button mat-menu-item type="button" (click)="signOut()"><mat-icon aria-hidden="true">logout</mat-icon>{{ 'nav.signOut' | transloco }}</button>
+        </mat-menu>
+      }
+    </header>
+
+    <main id="main" #main tabindex="-1" class="main">
+      <router-outlet />
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <span class="muted">Achernar Identity · v{{ version }}</span>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

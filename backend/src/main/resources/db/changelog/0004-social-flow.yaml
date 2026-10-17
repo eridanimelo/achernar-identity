@@ -1,0 +1,48 @@
+# Transações e códigos de troca do login social. data-model.md §2.9 e §2.10.
+databaseChangeLog:
+  - changeSet:
+      id: 0004-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE social_transaction (
+                id                         uuid          NOT NULL PRIMARY KEY,
+                state_hash                 varchar(64)   NOT NULL,
+                provider                   varchar(16)   NOT NULL,
+                purpose                    varchar(16)   NOT NULL,
+                application_id             uuid          NOT NULL REFERENCES application (id),
+                redirect_uri               varchar(500)  NOT NULL,
+                client_state               varchar(500),
+                client_code_challenge      varchar(128),
+                audiences                  varchar(2000),
+                nonce                      varchar(64),
+                provider_code_verifier_enc bytea         NOT NULL,
+                browser_binding_hash       varchar(64)   NOT NULL,
+                account_id                 uuid,
+                session_id                 uuid,
+                created_at                 timestamptz   NOT NULL,
+                expires_at                 timestamptz   NOT NULL,
+                consumed_at                timestamptz,
+                CONSTRAINT uq_social_tx_state UNIQUE (state_hash),
+                CONSTRAINT ck_social_tx_provider CHECK (provider IN ('GOOGLE','FACEBOOK')),
+                CONSTRAINT ck_social_tx_purpose CHECK (purpose IN ('LOGIN','LINK','REAUTH'))
+              );
+              CREATE INDEX ix_social_tx_expires ON social_transaction (expires_at);
+
+              CREATE TABLE social_exchange_code (
+                id             uuid          NOT NULL PRIMARY KEY,
+                code_hash      varchar(64)   NOT NULL,
+                account_id     uuid          NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+                application_id uuid          NOT NULL REFERENCES application (id),
+                provider       varchar(16)   NOT NULL,
+                audiences      varchar(2000),
+                redirect_uri   varchar(500)  NOT NULL,
+                code_challenge varchar(128)  NOT NULL,
+                created_at     timestamptz   NOT NULL,
+                expires_at     timestamptz   NOT NULL,
+                consumed_at    timestamptz,
+                session_id     uuid,
+                CONSTRAINT uq_social_code_hash UNIQUE (code_hash)
+              );
+              CREATE INDEX ix_social_code_expires ON social_exchange_code (expires_at);

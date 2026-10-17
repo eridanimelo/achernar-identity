@@ -12,29 +12,29 @@ technology:
   database: postgresql
 
 details:
-  java_version: "27"
-  spring_boot: "4"
+  java_version: "25"
+  spring_boot: "4.1"
   spring_security: true
-  spring_authorization_server: true
+  spring_authorization_server: false
   angular: "22"
   frontend_styling: angular-material
   angular_material: true
   postgresql: true
   liquibase: true
-  jpa_hibernate_domain: true
-  authorization_server_jdbc_components: true
+  jpa_hibernate_domain: false   # IMP-01: Spring JDBC
+  authorization_server_jdbc_components: false
   backend_build: maven
   lombok: false
   local_runtime: docker-compose
   docker_dir: docker
   docker_compose_file: docker/docker-compose.yml
-  postgres_volume: achernar_identity_pgdata
-  hibernate_ddl_auto: validate
-  i18n: true
+  postgres_volume: achernar_identity_pgdata18
+    i18n: true
   redis: false
   # Decisões humanas registradas em 2026-10-11 (configuração inicial Achernar Identity).
   # Preservam os slugs acima; somente chaves de detalhe adicionadas.
-  mailhog_local: true
+  mailhog_local: false
+  mailpit_local: true   # IMP-40 (substitui MailHog)
   mailhog_scope: local-only
   production_email_provider: pending
   smtp_config: external
@@ -42,3 +42,9 @@ details:
   security_audit_storage: postgresql-table
   security_audit_table: security_audit_event
   security_audit_migrations: liquibase
+  # Implementação (2026-10-17) — ver requisitos/specs/_shared/implementation-decisions.md
+  postgresql_version: "18"
+  node_version: "24"
+  i18n_library: transloco
+  argon2: true
+  social_login: [google, facebook]

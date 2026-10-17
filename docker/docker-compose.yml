@@ -1,10 +1,12 @@
-# Achernar Identity — Postgres + MailHog (desenvolvimento).
-# Backend e frontend rodam fora do Compose nesta etapa.
-# Uso (a partir de docker/): `docker compose up -d`
-# ou `docker compose --env-file .env up -d` após copiar `.env.example` para `.env`.
+# Achernar Identity — PostgreSQL 18 + Mailpit (SMTP de captura) para desenvolvimento.
+# Backend e frontend rodam no host:
+#   cd backend  && mvn spring-boot:run     (perfil dev, porta 8080)
+#   cd frontend && npm start               (porta 4200, proxy para a API)
+# Uso (a partir de docker/): `docker compose up -d` (opcional: `--env-file .env` após copiar `.env.example`).
+name: achernar-identity-dev
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: achernar_identity_postgres
     restart: unless-stopped
     environment:
@@ -12,28 +14,30 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-achernar_identity}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-achernar_identity}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - achernar_identity_pgdata:/var/lib/postgresql/data
+      - achernar_identity_pgdata18:/var/lib/postgresql   # PG18+: o diretório de dados fica em /var/lib/postgresql/18/docker
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-achernar_identity} -d $${POSTGRES_DB:-achernar_identity}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: achernar_identity_mailhog
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: achernar_identity_mailpit
     restart: unless-stopped
+    environment:
+      MP_MAX_MESSAGES: 500
     ports:
-      - "${MAILHOG_SMTP_PORT:-1025}:1025"   # SMTP
-      - "${MAILHOG_UI_PORT:-8025}:8025"     # Web UI
+      - "127.0.0.1:${MAIL_SMTP_PORT:-1025}:1025"   # SMTP
+      - "127.0.0.1:${MAIL_UI_PORT:-8025}:8025"     # caixa de entrada web
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8025"]
+      test: ["CMD", "/mailpit", "readyz"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  achernar_identity_pgdata:
-    name: achernar_identity_pgdata
+  achernar_identity_pgdata18:
+    name: achernar_identity_pgdata18

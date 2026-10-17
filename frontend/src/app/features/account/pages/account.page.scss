@@ -1,0 +1,25 @@
+.card {
+  max-width: 720px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px 24px;
+  margin: 0;
+
+  dt {
+    font-size: 14px;
+    color: var(--ach-text-2);
+  }
+
+  dd {
+    margin: 4px 0 0;
+    word-break: break-word;
+  }
+}
+
+.methods {
+  margin: 0;
+  padding-left: 18px;
+}

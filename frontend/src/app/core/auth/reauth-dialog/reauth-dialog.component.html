@@ -1,0 +1,41 @@
+<h2 mat-dialog-title id="reauth-title">{{ 'reauth.title' | transloco }}</h2>
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <mat-dialog-content>
+    <p>{{ 'reauth.description' | transloco }}</p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (hasPassword()) {
+      <app-password-field
+        [control]="form.controls.password"
+        [label]="'auth.password' | transloco"
+        autocomplete="current-password"
+        name="password"
+        [showToggle]="true"
+      />
+    }
+    @if (providers().length > 0) {
+      <div class="providers">
+        @if (hasPassword()) {
+          <p class="muted">{{ 'reauth.or' | transloco }}</p>
+        }
+        @for (p of providers(); track p) {
+          <button mat-stroked-button type="button" [disabled]="busy()" (click)="withProvider(p)">
+            {{ 'reauth.with' | transloco: { provider: ('social.' + p) | transloco } }}
+          </button>
+        }
+      </div>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+    @if (hasPassword()) {
+      <button mat-flat-button type="submit" [disabled]="busy()" [attr.aria-busy]="busy()">
+        @if (busy()) {
+          <mat-spinner diameter="18" />
+        }
+        {{ 'reauth.confirm' | transloco }}
+      </button>
+    }
+  </mat-dialog-actions>
+</form>

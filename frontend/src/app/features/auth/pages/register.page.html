@@ -1,0 +1,46 @@
+<app-auth-layout [title]="'auth.register.title' | transloco" [subtitle]="'auth.register.subtitle' | transloco">
+  @if (unavailable()) {
+    <div role="status">
+      <p>{{ 'auth.register.unavailable' | transloco }}</p>
+      <a mat-stroked-button routerLink="/login">{{ 'auth.backToLogin' | transloco }}</a>
+    </div>
+  } @else {
+    <form class="form-column" [formGroup]="form" (ngSubmit)="submit()" appFocusInvalid novalidate>
+      <app-error-summary [items]="summary()" [focusToken]="submits()" />
+      @if (failure(); as f) {
+        <app-form-alert [message]="failureMessage()" [traceId]="f.traceId" />
+      }
+      @if (blocked()) {
+        <p class="muted" role="status">{{ 'common.retryIn' | transloco: { seconds: wait() } }}</p>
+      }
+      <app-text-field
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        [maxlength]="254"
+        [control]="form.controls.email"
+        [label]="'auth.email' | transloco"
+        [required]="true"
+      />
+      <app-password-field
+        name="password"
+        [control]="form.controls.password"
+        [label]="'auth.password' | transloco"
+        [hint]="'password.hint' | transloco"
+        autocomplete="new-password"
+        [showMeter]="true"
+      />
+      <app-password-field name="confirm" [control]="form.controls.confirm" [label]="'auth.confirmPassword' | transloco" autocomplete="new-password" />
+      <div class="actions">
+        <button mat-flat-button type="submit" [disabled]="busy() || blocked()" [attr.aria-busy]="busy()">
+          @if (busy()) {
+            <mat-spinner diameter="18" />
+          }
+          {{ 'auth.register.submit' | transloco }}
+        </button>
+        <a routerLink="/login">{{ 'auth.haveAccount' | transloco }}</a>
+      </div>
+    </form>
+  }
+</app-auth-layout>

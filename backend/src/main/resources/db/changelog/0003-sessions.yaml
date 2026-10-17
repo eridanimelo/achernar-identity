@@ -1,0 +1,50 @@
+# Sessões e refresh tokens rotativos. data-model.md §2.6 e §2.7.
+databaseChangeLog:
+  - changeSet:
+      id: 0003-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE session (
+                id             uuid         NOT NULL PRIMARY KEY,
+                account_id     uuid         NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+                application_id uuid         NOT NULL REFERENCES application (id),
+                amr            varchar(16)  NOT NULL,
+                created_at     timestamptz  NOT NULL,
+                auth_time      timestamptz  NOT NULL,
+                last_used_at   timestamptz  NOT NULL,
+                expires_at     timestamptz  NOT NULL,
+                last_reauth_at timestamptz  NOT NULL,
+                revoked_at     timestamptz,
+                revoke_reason  varchar(24),
+                ip             varchar(45),
+                user_agent     varchar(255),
+                CONSTRAINT ck_session_amr CHECK (amr IN ('pwd','google','facebook')),
+                CONSTRAINT ck_session_reason CHECK (revoke_reason IS NULL OR revoke_reason IN
+                  ('LOGOUT','USER','USER_ALL','ADMIN_DISABLED','PASSWORD_RESET','PASSWORD_CHANGED','EMAIL_CHANGED',
+                   'REUSE_DETECTED','SESSION_LIMIT','APP_DISABLED','ANONYMIZED','KEY_COMPROMISE'))
+              );
+              CREATE INDEX ix_session_account_active ON session (account_id, last_used_at DESC) WHERE revoked_at IS NULL;
+              CREATE INDEX ix_session_app_active ON session (application_id) WHERE revoked_at IS NULL;
+              CREATE INDEX ix_session_purge ON session ((COALESCE(revoked_at, expires_at)));
+
+              CREATE TABLE session_audience (
+                session_id uuid         NOT NULL REFERENCES session (id) ON DELETE CASCADE,
+                audience   varchar(200) NOT NULL,
+                PRIMARY KEY (session_id, audience)
+              );
+
+              CREATE TABLE refresh_token (
+                id             uuid        NOT NULL PRIMARY KEY,
+                session_id     uuid        NOT NULL REFERENCES session (id) ON DELETE CASCADE,
+                token_hash     varchar(64) NOT NULL,
+                created_at     timestamptz NOT NULL,
+                expires_at     timestamptz NOT NULL,
+                rotated_at     timestamptz,
+                replaced_by_id uuid        REFERENCES refresh_token (id),
+                CONSTRAINT uq_refresh_token_hash UNIQUE (token_hash)
+              );
+              CREATE UNIQUE INDEX uq_refresh_one_active ON refresh_token (session_id) WHERE rotated_at IS NULL;
+              CREATE INDEX ix_refresh_session ON refresh_token (session_id, created_at DESC);
+              CREATE INDEX ix_refresh_expires ON refresh_token (expires_at);

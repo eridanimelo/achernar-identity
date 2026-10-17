@@ -1,0 +1,11 @@
+.error {
+  color: var(--ach-error);
+  margin: 0 0 12px;
+}
+
+.providers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}

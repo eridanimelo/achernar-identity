@@ -1,0 +1,161 @@
+@use './styles/tokens';
+@use './styles/theme';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--ach-bg);
+  color: var(--ach-text);
+  font-family: var(--ach-font-body);
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ach-font-title);
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+a {
+  color: var(--ach-primary);
+  text-underline-offset: 3px;
+}
+
+code,
+.mono {
+  font-family: var(--ach-font-mono);
+  font-size: 14px;
+}
+
+// Foco visível: anel de 2 px com offset de 2 px (WCAG 2.4.7/2.4.11).
+:focus-visible {
+  outline: 2px solid var(--ach-focus);
+  outline-offset: 2px;
+}
+
+h1[tabindex='-1']:focus {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -64px;
+  z-index: 1000;
+  padding: 12px 16px;
+  background: var(--ach-primary);
+  color: var(--ach-on-primary);
+  border-radius: var(--ach-radius-field);
+
+  &:focus {
+    top: 8px;
+  }
+}
+
+.mat-icon {
+  font-family: 'Material Icons Outlined';
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.muted {
+  color: var(--ach-text-2);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+  border-radius: var(--ach-radius-card);
+  background: var(--ach-surface);
+
+  table {
+    width: 100%;
+    background: transparent;
+  }
+
+  th.mat-mdc-header-cell {
+    background: var(--ach-surface-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  mat-form-field {
+    flex: 1 1 200px;
+    max-width: 280px;
+  }
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.bar {
+  margin: 24px 0;
+}

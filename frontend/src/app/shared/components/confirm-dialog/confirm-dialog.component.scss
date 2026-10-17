@@ -1,0 +1,9 @@
+.full {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.destructive {
+  --mat-button-filled-container-color: var(--ach-error);
+  --mat-button-filled-label-text-color: var(--ach-bg);
+}

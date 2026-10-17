@@ -1,0 +1,72 @@
+<a routerLink="/admin/accounts" class="back">← {{ 'admin.accounts.title' | transloco }}</a>
+
+@if (loading() && !account()) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="6" />
+}
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+}
+
+@if (account(); as a) {
+  <app-page-header [title]="a.email" [subtitle]="'admin.account.subtitle' | transloco">
+    @if (!anonymized()) {
+      @if (a.status === 'DISABLED') {
+        <button mat-flat-button type="button" [disabled]="busy()" (click)="enable()">{{ 'admin.account.enable' | transloco }}</button>
+      } @else {
+        <button mat-stroked-button type="button" [disabled]="busy()" (click)="disable()">{{ 'admin.account.disable' | transloco }}</button>
+      }
+      <button mat-stroked-button type="button" [disabled]="busy()" (click)="toggleRole()">
+        {{ (a.role === 'ADMIN' ? 'admin.account.revokeAdmin' : 'admin.account.grant') | transloco }}
+      </button>
+      <button mat-stroked-button type="button" [disabled]="busy()" (click)="anonymize()">{{ 'admin.account.anonymize' | transloco }}</button>
+    }
+  </app-page-header>
+
+  <section class="panel" aria-labelledby="det-title">
+    <h2 id="det-title">{{ 'admin.account.details' | transloco }}</h2>
+    <dl class="grid">
+      <div><dt>{{ 'account.statusLabel' | transloco }}</dt><dd><app-status-chip [tone]="tone(a.status)" [label]="'account.status.' + a.status | transloco" /></dd></div>
+      <div><dt>{{ 'account.roleLabel' | transloco }}</dt><dd>{{ 'account.role.' + a.role | transloco }}</dd></div>
+      <div><dt>{{ 'account.emailStatus' | transloco }}</dt><dd>{{ (a.email_verified ? 'account.verified' : 'account.unverified') | transloco }}</dd></div>
+      <div><dt>{{ 'admin.account.activeSessions' | transloco }}</dt><dd>{{ a.active_sessions }}</dd></div>
+      <div><dt>{{ 'account.createdAt' | transloco }}</dt><dd>{{ a.created_at | localDate }}</dd></div>
+      <div><dt>{{ 'admin.account.locale' | transloco }}</dt><dd>{{ a.locale }}</dd></div>
+      @if (a.disabled_at) {
+        <div><dt>{{ 'admin.account.disabledAt' | transloco }}</dt><dd>{{ a.disabled_at | localDate }}</dd></div>
+        @if (a.disabled_reason) {
+          <div><dt>{{ 'common.reason' | transloco }}</dt><dd>{{ a.disabled_reason }}</dd></div>
+        }
+      }
+      @if (a.anonymized_at) {
+        <div><dt>{{ 'admin.account.anonymizedAt' | transloco }}</dt><dd>{{ a.anonymized_at | localDate }}</dd></div>
+      }
+      <div>
+        <dt>{{ 'account.methods' | transloco }}</dt>
+        <dd>
+          @if (a.has_password) { {{ 'account.method.password' | transloco }} }
+          @for (l of a.social_links; track l.provider) { {{ 'social.' + l.provider | transloco }} }
+          @if (!a.has_password && a.social_links.length === 0) { — }
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="panel" aria-labelledby="ev-title">
+    <h2 id="ev-title">{{ 'admin.account.recentEvents' | transloco }}</h2>
+    @if (a.recent_events.length === 0) {
+      <p class="muted">{{ 'admin.events.empty' | transloco }}</p>
+    } @else {
+      <ul class="events">
+        @for (e of a.recent_events; track e.id) {
+          <li>
+            <span class="mono">{{ e.event_type }}</span>
+            <app-status-chip [tone]="sevTone(e.severity)" [label]="'severity.' + e.severity | transloco" />
+            <app-status-chip [tone]="outTone(e.outcome)" [label]="'outcome.' + e.outcome | transloco" />
+            <span class="muted">{{ e.occurred_at | localDate }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

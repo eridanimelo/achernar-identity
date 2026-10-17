@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$cyan-palette,
+      theme-type: color-scheme,
+    ),
+    typography: (
+      plain-family: 'Inter Variable',
+      brand-family: 'Manrope Variable',
+    ),
+    density: 0,
+  ));
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+// Mapeamento dos system tokens do Material 3 para os tokens Achernar.
+html {
+  --mat-sys-primary: var(--ach-primary);
+  --mat-sys-on-primary: var(--ach-on-primary);
+  --mat-sys-background: var(--ach-bg);
+  --mat-sys-surface: var(--ach-surface);
+  --mat-sys-on-surface: var(--ach-text);
+  --mat-sys-on-surface-variant: var(--ach-text-2);
+  --mat-sys-surface-container: var(--ach-surface);
+  --mat-sys-surface-container-high: var(--ach-surface-2);
+  --mat-sys-surface-container-low: var(--ach-surface);
+  --mat-sys-outline: var(--ach-outline);
+  --mat-sys-error: var(--ach-error);
+  --mat-sys-corner-extra-large: var(--ach-radius-dialog);
+}

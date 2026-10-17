@@ -1,0 +1,77 @@
+# Contas, credenciais, vínculos sociais e tokens de uso único. data-model.md §2.1–2.3, §2.8.
+databaseChangeLog:
+  - changeSet:
+      id: 0002-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE account (
+                id                uuid         NOT NULL PRIMARY KEY,
+                email_display     varchar(254) NOT NULL,
+                email_normalized  varchar(254) NOT NULL,
+                status            varchar(24)  NOT NULL,
+                role              varchar(16)  NOT NULL DEFAULT 'USER',
+                email_verified_at timestamptz,
+                locale            varchar(8)   NOT NULL DEFAULT 'pt-BR',
+                disabled_at       timestamptz,
+                disabled_reason   varchar(200),
+                anonymized_at     timestamptz,
+                created_at        timestamptz  NOT NULL,
+                updated_at        timestamptz  NOT NULL,
+                version           bigint       NOT NULL DEFAULT 0,
+                CONSTRAINT uq_account_email_normalized UNIQUE (email_normalized),
+                CONSTRAINT ck_account_status CHECK (status IN ('PENDING_VERIFICATION','ACTIVE','DISABLED')),
+                CONSTRAINT ck_account_role CHECK (role IN ('USER','ADMIN')),
+                CONSTRAINT ck_account_locale CHECK (locale IN ('pt-BR','en')),
+                CONSTRAINT ck_account_active_verified CHECK (status <> 'ACTIVE' OR email_verified_at IS NOT NULL),
+                CONSTRAINT ck_account_disabled_at CHECK (status <> 'DISABLED' OR disabled_at IS NOT NULL),
+                CONSTRAINT ck_account_anonymized CHECK (anonymized_at IS NULL OR status = 'DISABLED')
+              );
+              CREATE INDEX ix_account_pending_created ON account (created_at) WHERE status = 'PENDING_VERIFICATION';
+              CREATE INDEX ix_account_active_admin ON account (id) WHERE role = 'ADMIN' AND status = 'ACTIVE';
+              CREATE INDEX ix_account_email_prefix ON account (email_normalized text_pattern_ops);
+              CREATE INDEX ix_account_status_created ON account (status, created_at DESC);
+              CREATE INDEX ix_account_role ON account (role);
+
+              CREATE TABLE password_credential (
+                account_id    uuid         NOT NULL PRIMARY KEY REFERENCES account (id) ON DELETE CASCADE,
+                password_hash varchar(255) NOT NULL,
+                changed_at    timestamptz  NOT NULL,
+                created_at    timestamptz  NOT NULL
+              );
+
+              CREATE TABLE social_link (
+                id               uuid         NOT NULL PRIMARY KEY,
+                account_id       uuid         NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+                provider         varchar(16)  NOT NULL,
+                provider_subject varchar(255) NOT NULL,
+                provider_email   varchar(254),
+                linked_at        timestamptz  NOT NULL,
+                last_login_at    timestamptz,
+                CONSTRAINT ck_social_provider CHECK (provider IN ('GOOGLE','FACEBOOK')),
+                CONSTRAINT uq_social_identity UNIQUE (provider, provider_subject),
+                CONSTRAINT uq_social_account_provider UNIQUE (account_id, provider)
+              );
+
+              CREATE TABLE one_time_token (
+                id                   uuid         NOT NULL PRIMARY KEY,
+                account_id           uuid         NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+                purpose              varchar(24)  NOT NULL,
+                token_hash           varchar(64)  NOT NULL,
+                application_id       uuid         REFERENCES application (id),
+                new_email_display    varchar(254),
+                new_email_normalized varchar(254),
+                created_at           timestamptz  NOT NULL,
+                expires_at           timestamptz  NOT NULL,
+                consumed_at          timestamptz,
+                invalidated_at       timestamptz,
+                CONSTRAINT ck_ott_purpose CHECK (purpose IN ('EMAIL_VERIFICATION','PASSWORD_RESET','EMAIL_CHANGE')),
+                CONSTRAINT uq_ott_token_hash UNIQUE (token_hash),
+                CONSTRAINT ck_ott_email_change CHECK (
+                  (purpose = 'EMAIL_CHANGE' AND new_email_display IS NOT NULL AND new_email_normalized IS NOT NULL)
+                  OR (purpose <> 'EMAIL_CHANGE' AND new_email_display IS NULL AND new_email_normalized IS NULL))
+              );
+              CREATE UNIQUE INDEX uq_ott_active ON one_time_token (account_id, purpose)
+                WHERE consumed_at IS NULL AND invalidated_at IS NULL;
+              CREATE INDEX ix_ott_expires ON one_time_token (expires_at);

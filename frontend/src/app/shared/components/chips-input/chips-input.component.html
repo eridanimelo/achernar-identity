@@ -1,0 +1,38 @@
+<div class="group" role="group" [attr.aria-labelledby]="name() + '-label'">
+  <span class="label" [id]="name() + '-label'">{{ label() }}</span>
+  @if (values().length > 0) {
+    <ul class="list">
+      @for (v of values(); track v) {
+        <li>
+          <span class="chip"
+            ><code>{{ v }}</code>
+            <button type="button" class="rm" (click)="remove(v)" [attr.aria-label]="('common.remove' | transloco) + ' ' + v">
+              <mat-icon aria-hidden="true">close</mat-icon>
+            </button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+  <div class="add">
+    <mat-form-field appearance="outline" class="input">
+      <mat-label>{{ 'common.add' | transloco }}</mat-label>
+      <input
+        matInput
+        [id]="name()"
+        [name]="name()"
+        autocomplete="off"
+        [placeholder]="placeholder()"
+        [ngModel]="draft()"
+        (ngModelChange)="draft.set($event); error.set(null)"
+        (keydown.enter)="$event.preventDefault(); add()"
+        [disabled]="full()"
+      />
+      @if (error(); as e) {
+        <mat-error>{{ e | transloco: { max: max() } }}</mat-error>
+      }
+    </mat-form-field>
+    <button mat-stroked-button type="button" (click)="add()" [disabled]="full()">{{ 'common.add' | transloco }}</button>
+  </div>
+  <p class="muted count">{{ values().length }} / {{ max() }}</p>
+</div>

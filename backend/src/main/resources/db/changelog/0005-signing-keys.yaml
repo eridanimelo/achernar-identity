@@ -1,0 +1,26 @@
+# Chaves de assinatura do JWT. data-model.md §2.11.
+databaseChangeLog:
+  - changeSet:
+      id: 0005-1
+      author: achernar
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE signing_key (
+                id              uuid        NOT NULL PRIMARY KEY,
+                kid             varchar(64) NOT NULL,
+                algorithm       varchar(8)  NOT NULL,
+                public_jwk      text        NOT NULL,
+                private_key_enc bytea,
+                status          varchar(16) NOT NULL,
+                created_at      timestamptz NOT NULL,
+                publish_at      timestamptz NOT NULL,
+                activate_at     timestamptz NOT NULL,
+                retire_at       timestamptz,
+                remove_at       timestamptz,
+                removal_reason  varchar(24),
+                CONSTRAINT uq_signing_key_kid UNIQUE (kid),
+                CONSTRAINT ck_signing_key_alg CHECK (algorithm = 'RS256'),
+                CONSTRAINT ck_signing_key_status CHECK (status IN ('PUBLISHED','ACTIVE','RETIRED','REMOVED'))
+              );
+              CREATE UNIQUE INDEX uq_signing_key_one_active ON signing_key ((true)) WHERE status = 'ACTIVE';

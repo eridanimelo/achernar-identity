@@ -1,0 +1,17 @@
+.sections {
+  display: grid;
+  gap: 32px;
+  max-width: 720px;
+
+  ::ng-deep .section {
+    padding: 24px;
+    background: var(--ach-surface);
+    border: 1px solid color-mix(in srgb, var(--ach-outline) 40%, transparent);
+    border-radius: var(--ach-radius-card);
+  }
+}
+
+.note {
+  margin: -24px 0 0;
+  font-size: 14px;
+}

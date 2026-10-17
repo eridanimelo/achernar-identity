@@ -1,0 +1,32 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px 2px 6px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.tone-success {
+  color: var(--ach-success);
+}
+.tone-warning {
+  color: var(--ach-warning);
+}
+.tone-error {
+  color: var(--ach-error);
+}
+.tone-info {
+  color: var(--ach-primary);
+}
+.tone-neutral {
+  color: var(--ach-text-2);
+}
+  

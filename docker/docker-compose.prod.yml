@@ -1,0 +1,93 @@
+# Produção de referência: Caddy (TLS + mesma origem) → API + UI estática; PostgreSQL interno.
+# Uso: docker compose -f docker/docker-compose.prod.yml --env-file docker/.env up -d --build
+name: achernar-identity
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: achernar_identity
+      POSTGRES_USER: achernar_identity
+      POSTGRES_PASSWORD: ${ACHERNAR_DB_PASSWORD:?defina ACHERNAR_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U achernar_identity -d achernar_identity"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [internal]
+
+  api:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      ACHERNAR_DB_URL: jdbc:postgresql://postgres:5432/achernar_identity
+      ACHERNAR_DB_USER: achernar_identity
+      ACHERNAR_DB_PASSWORD: ${ACHERNAR_DB_PASSWORD}
+      ACHERNAR_ISSUER: ${ACHERNAR_ISSUER:?}
+      ACHERNAR_UI_BASE_URL: ${ACHERNAR_UI_BASE_URL:?}
+      ACHERNAR_UI_ORIGINS: ${ACHERNAR_UI_ORIGINS:?}
+      ACHERNAR_MASTER_KEY: ${ACHERNAR_MASTER_KEY:?}
+      ACHERNAR_BOOTSTRAP_TOKEN: ${ACHERNAR_BOOTSTRAP_TOKEN:-}
+      ACHERNAR_TRUSTED_PROXIES: ${ACHERNAR_TRUSTED_PROXIES:-}
+      ACHERNAR_COOKIE_SECURE: "true"
+      ACHERNAR_SMTP_HOST: ${ACHERNAR_SMTP_HOST:?}
+      ACHERNAR_SMTP_PORT: ${ACHERNAR_SMTP_PORT:-587}
+      ACHERNAR_SMTP_USERNAME: ${ACHERNAR_SMTP_USERNAME:-}
+      ACHERNAR_SMTP_PASSWORD: ${ACHERNAR_SMTP_PASSWORD:-}
+      ACHERNAR_SMTP_AUTH: ${ACHERNAR_SMTP_AUTH:-true}
+      ACHERNAR_SMTP_STARTTLS: ${ACHERNAR_SMTP_STARTTLS:-true}
+      ACHERNAR_MAIL_FROM: ${ACHERNAR_MAIL_FROM:?}
+      ACHERNAR_GOOGLE_CLIENT_ID: ${ACHERNAR_GOOGLE_CLIENT_ID:-}
+      ACHERNAR_GOOGLE_CLIENT_SECRET: ${ACHERNAR_GOOGLE_CLIENT_SECRET:-}
+      ACHERNAR_FACEBOOK_APP_ID: ${ACHERNAR_FACEBOOK_APP_ID:-}
+      ACHERNAR_FACEBOOK_APP_SECRET: ${ACHERNAR_FACEBOOK_APP_SECRET:-}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          bash -c 'exec 3<>/dev/tcp/127.0.0.1/9090;
+          printf "GET /actuator/health/readiness HTTP/1.0\r\n\r\n" >&3;
+          head -n1 <&3 | grep -q " 200"'
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+    networks: [internal]
+
+  ui:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks: [internal]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [api, ui]
+    environment:
+      ACHERNAR_PUBLIC_HOST: ${ACHERNAR_PUBLIC_HOST:?}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [internal]
+
+networks:
+  internal:
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

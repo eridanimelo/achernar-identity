@@ -1,0 +1,101 @@
+<app-page-header [title]="'admin.events.title' | transloco" [subtitle]="'admin.events.subtitle' | transloco" />
+
+<form class="filters" [formGroup]="form" (ngSubmit)="apply()" role="search" [attr.aria-label]="'admin.events.filters' | transloco">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.from' | transloco }}</mat-label>
+    <input matInput type="datetime-local" formControlName="from" name="from" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.to' | transloco }}</mat-label>
+    <input matInput type="datetime-local" formControlName="to" name="to" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.type' | transloco }}</mat-label>
+    <mat-select formControlName="type" multiple name="type">
+      @for (t of types; track t) {
+        <mat-option [value]="t">{{ t }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.account' | transloco }}</mat-label>
+    <input matInput formControlName="account" name="account" autocomplete="off" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>client_id</mat-label>
+    <input matInput formControlName="client_id" name="client_id" autocomplete="off" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.outcome' | transloco }}</mat-label>
+    <mat-select formControlName="outcome" name="outcome">
+      <mat-option value="">{{ 'common.all' | transloco }}</mat-option>
+      @for (o of outcomes; track o) {
+        <mat-option [value]="o">{{ 'outcome.' + o | transloco }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'admin.events.severity' | transloco }}</mat-label>
+    <mat-select formControlName="severity" name="severity">
+      <mat-option value="">{{ 'common.all' | transloco }}</mat-option>
+      @for (s of severities; track s) {
+        <mat-option [value]="s">{{ 'severity.' + s | transloco }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <div class="actions">
+    <button mat-flat-button type="submit" [disabled]="loading()">{{ 'common.filter' | transloco }}</button>
+    <button mat-button type="button" (click)="clear()">{{ 'common.clear' | transloco }}</button>
+  </div>
+</form>
+
+@if (periodError()) {
+  <p class="period-error" role="alert">{{ 'admin.events.periodError' | transloco }}</p>
+}
+
+@if (failure(); as f) {
+  <app-form-alert [message]="message()" [traceId]="f.traceId" />
+}
+
+@if (loading() && items().length === 0) {
+  <app-skeleton [label]="'common.loading' | transloco" [lines]="6" />
+} @else if (loaded() && items().length === 0 && !failure()) {
+  <app-empty-state icon="manage_search" [title]="'admin.events.empty' | transloco" [text]="'admin.events.emptyHint' | transloco" />
+} @else {
+  <ul class="events" [attr.aria-busy]="loading()">
+    @for (e of items(); track e.id) {
+      <li class="event">
+        <div class="head">
+          <span class="type">{{ e.event_type }}</span>
+          <app-status-chip [tone]="tone(e.severity)" [label]="'severity.' + e.severity | transloco" />
+          <span class="when">{{ e.occurred_at | localDate: 'datetime' }}</span>
+          <button mat-button type="button" [attr.aria-expanded]="isOpen(e.id)" [attr.aria-controls]="'ev-' + e.id" (click)="toggle(e.id)">
+            {{ (isOpen(e.id) ? 'admin.events.hideDetails' : 'admin.events.showDetails') | transloco }}
+          </button>
+        </div>
+        <p class="meta">
+          <span>{{ 'admin.events.outcome' | transloco }}: {{ 'outcome.' + e.outcome | transloco }}</span>
+          @if (e.account) { <span>{{ 'admin.events.account' | transloco }}: {{ e.account.email ?? e.account.id }}</span> }
+          @if (e.client_id) { <span>client_id: {{ e.client_id }}</span> }
+          @if (e.ip) { <span>IP: {{ e.ip }}</span> }
+        </p>
+        @if (isOpen(e.id)) {
+          <div [id]="'ev-' + e.id">
+            <p class="meta">
+              @if (e.request_id) { <span>request_id: {{ e.request_id }}</span> }
+              @if (e.session_id) { <span>session_id: {{ e.session_id }}</span> }
+              @if (e.actor_account_id) { <span>actor: {{ e.actor_account_id }}</span> }
+              @if (e.user_agent) { <span>{{ e.user_agent }}</span> }
+            </p>
+            <pre class="details" tabindex="0">{{ detailsOf(e) }}</pre>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+  @if (nextCursor()) {
+    <div class="more">
+      <button mat-stroked-button type="button" [disabled]="loading()" (click)="more()">{{ 'admin.events.loadMore' | transloco }}</button>
+    </div>
+  }
+}

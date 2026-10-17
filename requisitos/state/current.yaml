@@ -1,24 +1,20 @@
 # Estado corrente — retomada de contexto (rules/context/session-lifecycle.md)
 updated_at: 2026-10-17
-intent: DISCOVERY+SPECIFICATION   # execução única autorizada pelo humano (prompt "Discovery e especificações completas")
-scope: Achernar Identity — discovery completo + todas as especificações; SEM implementação
-phase: SPECIFICATION_COMPLETE_AWAITING_HUMAN_REVIEW
+intent: IMPLEMENTATION
+scope: Achernar Identity — implementação E0→E9 (backend, frontend, testes)
+phase: IMPLEMENTATION_DONE_AWAITING_HUMAN_VERIFICATION
 authorization:
-  source: prompt do usuário (2026-10-16) — autoriza decisões técnicas/de produto e conclusão de todas as etapas desta execução
-  implementation_authorized: false   # GATE-AUT NÃO concedido; exige intenção explícita do humano
-session_note: >
-  A ferramenta não oferece abertura de nova sessão isolada; nenhuma nova sessão foi aberta.
-  Continuidade por este arquivo + docs em requisitos/. Em caso de perda de contexto: ler este arquivo,
-  requisitos/specs/_shared/index.md, decisions.md e reviews/completeness-check.md.
+  source: prompt do usuário (2026-10-17) — "implemente o front e backend e os testes. pare apenas quando terminar"
+  implementation_authorized: true
+branch: feature/implementacao-achernar-identity   # criada a partir de develop; NUNCA fazer push sem pedido explícito
 done:
-  - discovery: system, modules, use-cases (47 UCs), dependencies, prioritization (Waves 0-4)
-  - _shared: decisions (D-01..D-51), parameters (P-01..P-80), error-catalog, event-catalog, requirements (RF-01..34, RNF-01..20), business-rules, data-model, api-conventions, token-lifecycle, security-policy, social-login, emails, consumer-integration, architecture, ui-map, visual-proposal, deployment-operations, migrations-backup, config-changes, test-plan, implementation-plan, index, traceability (gerado)
-  - specs FT-01..FT-14 (8 arquivos cada; 256 CA, 269 CT)
-  - reviews/completeness-check.md (0 problemas na verificação automatizada)
-  - README atualizado (sem claims obsoletos)
-  - tools/verify_specs.py (documentação)
+  - backend/ completo (Java 25, Spring Boot 4.1, JDBC, Liquibase 0001-0007, todos os controladores/serviços das FT-01..FT-13)
+  - frontend/ completo (Angular 22; todas as telas SCR do ui-map; i18n pt-BR/en com 456 chaves)
+  - testes: backend 92 unitários (executados com executor mínimo) + ITs e ArchUnit escritos; frontend 62 testes Vitest + axe (executados)
+  - E0: docker (dev e prod de referência), Dockerfiles, Caddyfile, CI, .gitignore, configs .ia atualizadas
+  - decisões em requisitos/specs/_shared/implementation-decisions.md
 remaining:
-  - revisão humana do conjunto documental e decisão sobre GATE-AUT
-  - (após autorização explícita) E0 de implementation-plan.md: aplicar config-changes.md, criar backend/ e frontend/
-  - atualizar .ia/config/technology.yaml e PROJECT.yaml conforme DEV-01..07 (não feito: .ia não foi alterado)
-nothing_committed: true
+  - EXECUTAR `mvn verify` (compilação real + *IT com Docker) — o ambiente da implementação não tinha Maven/Docker; corrigir eventuais erros de compilação do Spring Boot 4.1/Security 7
+  - subir o stack e fazer teste ponta a ponta manual (setup → login → admin → login social com credenciais reais)
+  - revisão humana, GATE-QLT por feature e abertura do PR (sem push automático)
+  - configurar chave Jira correta (DEV-06) e criar `develop` remoto, se aplicável

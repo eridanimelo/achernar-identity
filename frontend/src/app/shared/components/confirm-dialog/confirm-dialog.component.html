@@ -1,0 +1,35 @@
+<h2 mat-dialog-title id="confirm-title">{{ data.title }}</h2>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  @if (data.typeToConfirm) {
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>{{ data.typeLabel }}</mat-label>
+      <input matInput name="confirm-text" autocomplete="off" [ngModel]="typed()" (ngModelChange)="typed.set($event)" />
+      <mat-hint>{{ data.typeToConfirm }}</mat-hint>
+    </mat-form-field>
+  }
+  @if (data.reason) {
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>{{ 'common.reason' | transloco }}</mat-label>
+      <input matInput name="reason" maxlength="200" [ngModel]="reason()" (ngModelChange)="reason.set($event)" />
+    </mat-form-field>
+  }
+  @if (data.option) {
+    <mat-checkbox [ngModel]="option()" (ngModelChange)="option.set($event)" name="option">{{ data.option.label }}</mat-checkbox>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button
+    mat-flat-button
+    type="button"
+    [class.destructive]="data.destructive"
+    [disabled]="!canConfirm()"
+    (click)="confirm()"
+  >
+    @if (data.destructive) {
+      <mat-icon aria-hidden="true">warning</mat-icon>
+    }
+    {{ data.confirmLabel }}
+  </button>
+</mat-dialog-actions>

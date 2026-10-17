@@ -1,0 +1,5 @@
+achernar:
+  cookie:
+    secure: false
+  dev-insecure-key: true
+  bootstrap-token: it-bootstrap-token-0123456789-0123456789

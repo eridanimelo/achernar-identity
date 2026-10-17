@@ -1,0 +1,61 @@
+.group {
+  margin-bottom: 8px;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px 2px 12px;
+  border: 1px solid var(--ach-outline);
+  border-radius: 999px;
+  background: var(--ach-surface-2);
+}
+
+.rm {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ach-text);
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.add {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.input {
+  flex: 1;
+}
+
+.count {
+  margin: 0;
+  font-size: 12px;
+}

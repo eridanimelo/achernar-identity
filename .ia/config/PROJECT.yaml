@@ -5,7 +5,7 @@
 project:
   id: achernar_identity
   name: Achernar Identity
-  description: Provedor de identidade próprio para autenticação centralizada e SSO entre aplicações, baseado em OAuth2 e OpenID Connect.
+  description: Serviço de identidade reutilizável por projeto (contas, autenticação e sessões) com JWT assimétrico, JWKS e login social; sem SSO entre aplicações independentes.
   version: 1.0.0
   organization: eridani
 
