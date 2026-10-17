@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,6 +84,12 @@ public abstract class AbstractIT {
 
     @Autowired
     protected JdbcTemplate jdbc;
+
+    /** Cada cenário recebe sua própria janela de taxa; não desativa a proteção durante o teste. */
+    @BeforeEach
+    void resetRateCounters() {
+        jdbc.update("DELETE FROM rate_limit_counter");
+    }
 
     private final HttpClient http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
 

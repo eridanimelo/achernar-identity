@@ -1,0 +1,12 @@
+updated_at: 2026-10-17
+scope: Índice parcial da unidade de validação local FT-01 e FT-03
+features:
+  FT-01:
+    frontend: runtime_and_setup_screen_verified
+    quality: pending_full_feature_validation
+    evidence: requisitos/state/frontend-validation.md
+  FT-03:
+    frontend: login_and_session_reload_smoke_verified
+    quality: pending_full_feature_validation
+    evidence: requisitos/state/frontend-validation.md
+remaining_global: revisão e encerramento por feature; este índice não substitui status.yaml das demais Specs

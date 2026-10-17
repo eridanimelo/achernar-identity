@@ -81,3 +81,65 @@ must_not_read:
   - .ia/.env
   - backend/**
   - frontend/**
+
+backend_validation:
+  date: 2026-10-17
+  intent: BACKEND
+  stage: VALIDATION
+  status: completed
+  evidence: requisitos/state/backend-validation.md
+  files:
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/business.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/api.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/database.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/security.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/tests.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-01-setup-primeiro-administrador/status.yaml
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+
+frontend_runtime_validation:
+  date: 2026-10-17
+  intent: FRONTEND
+  status: completed_for_runtime_fix
+  evidence: requisitos/state/frontend-validation.md
+  framework_context:
+    - .ia/AGENTS.md
+    - .ia/config/PROJECT.yaml
+    - .ia/config/paths.yaml
+    - .ia/config/technology.yaml
+    - .ia/agents/frontend/AGENT.md
+    - .ia/skills/frontend/SKILL.md
+    - .ia/skills/ui-ux-design/SKILL.md
+    - .ia/agents/reuse/frontend/AGENT.md
+    - .ia/skills/reuse-index/SKILL.md
+    - .ia/gates/contexto.md
+    - .ia/gates/autorizacao.md
+    - .ia/gates/analise.md
+    - .ia/gates/qualidade.md
+    - .ia/rules/context/context-economy.md
+    - .ia/rules/context/session-lifecycle.md
+    - .ia/rules/quality/quality.md
+    - .ia/rules/reuse/reuse.md
+    - .ia/rules/frontend/angular-architecture.md
+    - .ia/corporate/security/RULES.md
+    - .ia/corporate/testing/RULES.md
+  spec_context: [business.md, frontend.md, api.md, security.md, tests.md, status.yaml]
+  reason: contratos obrigatórios para corrigir inicialização e validar setup e login sem alterar comportamento funcional
+  reuse_decision: EXTEND_existing_initializer_REUSE_existing_services

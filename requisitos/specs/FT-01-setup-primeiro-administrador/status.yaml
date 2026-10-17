@@ -25,8 +25,8 @@ gates:
   closure: pending
 
 implementation:
-  backend: implemented_unverified   # código e testes escritos; NÃO compilado com Maven nem executado contra PostgreSQL (ver implementation-decisions.md §4)
-  frontend: implemented       # ng build, ng lint e Vitest executados com sucesso; sem E2E contra backend real
+  backend: build_and_existing_tests_verified   # mvn verify: 96 unitários/arquitetura + 19 IT; ver state/backend-validation.md
+  frontend: runtime_and_smoke_verified # 63 testes, lint, i18n, build; limites em state/frontend-validation.md
 
 open_questions: []
 

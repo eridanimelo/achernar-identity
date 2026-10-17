@@ -33,11 +33,14 @@ export const appConfig: ApplicationConfig = {
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { maxWidth: '100vw', autoFocus: 'first-tabbable', restoreFocus: true } },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000, verticalPosition: 'bottom' } },
     provideAppInitializer(async () => {
-      await inject(RuntimeConfigService).load();
+      const config = inject(RuntimeConfigService);
       const locale = inject(LocaleService);
+      const transloco = inject(TranslocoService);
+      const session = inject(SessionService);
+      await config.load();
       locale.init();
-      await firstValueFrom(inject(TranslocoService).load(locale.lang()));
-      await inject(SessionService).init();
+      await firstValueFrom(transloco.load(locale.lang()));
+      await session.init();
     }),
   ],
 };

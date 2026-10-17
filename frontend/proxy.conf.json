@@ -1,6 +1,7 @@
 {
   "/auth": { "target": "http://localhost:8080", "secure": false, "bypass": null },
   "/api": { "target": "http://localhost:8080", "secure": false },
-  "/setup": { "target": "http://localhost:8080", "secure": false },
+  "/setup/status": { "target": "http://localhost:8080", "secure": false },
+  "/setup/admin": { "target": "http://localhost:8080", "secure": false },
   "/.well-known": { "target": "http://localhost:8080", "secure": false }
 }

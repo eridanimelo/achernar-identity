@@ -1,20 +1,37 @@
-# Estado corrente — retomada de contexto (rules/context/session-lifecycle.md)
 updated_at: 2026-10-17
-intent: IMPLEMENTATION
-scope: Achernar Identity — implementação E0→E9 (backend, frontend, testes)
-phase: IMPLEMENTATION_DONE_AWAITING_HUMAN_VERIFICATION
+intent: FRONTEND
+scope: Inicialização Angular e smoke integrado do stack local
+phase: LOCAL_STACK_VALIDATED_REVIEW_PENDING
 authorization:
-  source: prompt do usuário (2026-10-17) — "implemente o front e backend e os testes. pare apenas quando terminar"
+  source: usuário solicitou continuar o fluxo, executar o projeto e terminar as pendências
   implementation_authorized: true
-branch: feature/implementacao-achernar-identity   # criada a partir de develop; NUNCA fazer push sem pedido explícito
+branch: feature/implementacao-achernar-identity
+gates:
+  context: pass_for_runtime_fix
+  authorization: pass
+  analysis: pass_for_runtime_fix
+  quality: pass_for_runtime_fix_and_existing_suites
+  closure: pending_global_review
 done:
-  - backend/ completo (Java 25, Spring Boot 4.1, JDBC, Liquibase 0001-0007, todos os controladores/serviços das FT-01..FT-13)
-  - frontend/ completo (Angular 22; todas as telas SCR do ui-map; i18n pt-BR/en com 456 chaves)
-  - testes: backend 92 unitários (executados com executor mínimo) + ITs e ArchUnit escritos; frontend 62 testes Vitest + axe (executados)
-  - E0: docker (dev e prod de referência), Dockerfiles, Caddyfile, CI, .gitignore, configs .ia atualizadas
-  - decisões em requisitos/specs/_shared/implementation-decisions.md
+  - Backend Java 25 clean verify aprovado; 96 unitários/arquitetura e 19 IT
+  - Frontend npm verify aprovado; i18n, lint, 15 arquivos e 63 testes, build
+  - Corrigidos inject após await no bootstrap e proxy que interceptava /setup
+  - Setup renderizado; fixture API 201; login real, conta ADMIN e lista administrativa no navegador
+  - Reload restaura sessão e dados; console final sem erros
+  - Stack local mantido em execução
 remaining:
-  - EXECUTAR `mvn verify` (compilação real + *IT com Docker) — o ambiente da implementação não tinha Maven/Docker; corrigir eventuais erros de compilação do Spring Boot 4.1/Security 7
-  - subir o stack e fazer teste ponta a ponta manual (setup → login → admin → login social com credenciais reais)
-  - revisão humana, GATE-QLT por feature e abertura do PR (sem push automático)
-  - configurar chave Jira correta (DEV-06) e criar `develop` remoto, se aplicável
+  - Revisão humana e gates globais por feature; cobertura integral de aceite e segurança ainda não demonstrada
+  - Login social Google/Facebook depende de credenciais reais não fornecidas
+  - Envio do formulário de setup, mobile e demais fluxos não cobertos por este smoke
+  - Jira DEV-06 e develop remoto pendentes; nenhum push executado
+next_intent: REVIEW
+next_scope: Revisar evidências, pendências por feature e encerramento global
+evidence:
+  - requisitos/state/backend-validation.md
+  - requisitos/state/frontend-validation.md
+local_access:
+  frontend: http://localhost:4200
+  api: http://localhost:8080
+  readiness: http://localhost:9090/actuator/health/readiness
+  mailpit: http://localhost:18025
+  local_test_credentials: /tmp/achernar-local-admin.json

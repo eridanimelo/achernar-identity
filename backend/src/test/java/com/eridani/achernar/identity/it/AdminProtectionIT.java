@@ -38,13 +38,20 @@ class AdminProtectionIT extends AbstractIT {
                 admin[0].toLowerCase());
         Integer admins = jdbc.queryForObject("SELECT count(*) FROM account WHERE role='ADMIN' AND status='ACTIVE'",
                 Integer.class);
-        if (admins != null && admins == 1) {
-            // reautentica (ação sensível) e tenta desativar a si próprio
-            assertThat(bearerPost("/api/v1/account/reauth", Map.of("password", admin[1]), token).status()).isEqualTo(200);
-            Resp disable = bearerPost("/api/v1/admin/accounts/" + id + "/disable", Map.of("reason", "teste"), token);
-            assertThat(disable.status()).isIn(409, 422);
-            assertThat(disable.str("code")).isEqualTo("LAST_ADMIN_PROTECTED");
-        }
+        assertThat(admins).isEqualTo(1);
+        assertThat(bearerPost("/api/v1/account/reauth", Map.of("password", admin[1]), token).status()).isEqualTo(200);
+        // CA-FT11-06: auto-desativação tem resposta própria.
+        Resp disable = bearerPost("/api/v1/admin/accounts/" + id + "/disable", Map.of("reason", "teste"), token);
+        assertThat(disable.status()).isEqualTo(403);
+        assertThat(disable.str("code")).isEqualTo("FORBIDDEN");
+        // CA-FT11-07: rebaixar o último administrador não pode eliminar a administração.
+        Long version = jdbc.queryForObject("SELECT version FROM account WHERE id::text = ?", Long.class, id);
+        Resp demote = send("PUT", "/api/v1/admin/accounts/" + id + "/role",
+                Map.of("role", "USER", "version", version), "Authorization", "Bearer " + token);
+        assertThat(demote.status()).isEqualTo(409);
+        assertThat(demote.str("code")).isEqualTo("LAST_ADMIN_PROTECTED");
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM account WHERE role='ADMIN' AND status='ACTIVE'",
+                Integer.class)).isEqualTo(1);
     }
 
     @Test

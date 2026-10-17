@@ -81,3 +81,35 @@ must_not_read:
   - .ia/.env
   - backend/**
   - frontend/**
+
+backend_validation:
+  date: 2026-10-17
+  intent: BACKEND
+  stage: VALIDATION
+  status: completed
+  evidence: requisitos/state/backend-validation.md
+  files:
+    - path: requisitos/specs/FT-11-administracao-de-contas/business.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-11-administracao-de-contas/api.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-11-administracao-de-contas/database.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-11-administracao-de-contas/security.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-11-administracao-de-contas/tests.md
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado
+    - path: requisitos/specs/FT-11-administracao-de-contas/status.yaml
+      reason: contrato obrigatório para corrigir expectativas de integração
+      artifact: testes backend
+      condition: validação do cenário afetado

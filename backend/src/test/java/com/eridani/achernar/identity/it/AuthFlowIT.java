@@ -10,10 +10,12 @@ import org.junit.jupiter.api.Test;
 class AuthFlowIT extends AbstractIT {
 
     @Test
-    void setupExigeTokenDeBootstrapCorreto() {
-        Resp r = post("/setup/admin", Map.of("bootstrap_token", "errado-errado-errado-errado-1234", "email",
+    void setupEncerradoRecusaCriacaoMesmoComTokenCorreto() {
+        ensureAdmin();
+        Resp r = post("/setup/admin", Map.of("bootstrap_token", BOOTSTRAP, "email",
                 uniqueEmail("x"), "password", PASSWORD));
-        assertThat(r.status()).isIn(401, 403, 409);
+        assertThat(r.status()).isEqualTo(404);
+        assertThat(r.str("code")).isEqualTo("SETUP_NOT_AVAILABLE");
     }
 
     @Test
@@ -110,11 +112,17 @@ class AuthFlowIT extends AbstractIT {
             last = post("/auth/login", Map.of("client_id", clientId, "email", email, "password", "errada-errada-" + i),
                     browserHeaders(clientId, null));
         }
-        assertThat(last.status()).isIn(423, 429);
+        assertThat(last.status()).isEqualTo(401);
+        assertThat(last.str("code")).isEqualTo("INVALID_CREDENTIALS");
         // mesmo com a senha correta, enquanto bloqueado
         Resp ok = post("/auth/login", Map.of("client_id", clientId, "email", email, "password", PASSWORD),
                 browserHeaders(clientId, null));
-        assertThat(ok.status()).isIn(423, 429);
-        assertThat(ok.header("Retry-After")).isNotNull();
+        assertThat(ok.status()).isEqualTo(401);
+        assertThat(ok.str("code")).isEqualTo(last.str("code"));
+        assertThat(ok.json().containsKey("access_token")).isFalse();
+        assertThat(ok.header("Retry-After")).isNull();
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM login_lock WHERE key_hash = ? AND locked_until > now()",
+                Integer.class, com.eridani.achernar.identity.shared.crypto.Sha256.hex(email.toLowerCase())))
+                .isEqualTo(1);
     }
 }

@@ -1,0 +1,12 @@
+- date: 2026-10-17
+  intent: BACKEND
+  scope: Validação Maven e execução local
+  result: BUILD_SUCCESS_115_TESTS
+  evidence: requisitos/state/backend-validation.md
+  next_intent: FRONTEND
+- date: 2026-10-17
+  intent: FRONTEND
+  scope: Bootstrap Angular, proxy local e smoke integrado
+  result: VERIFY_SUCCESS_63_TESTS_AND_BROWSER_SMOKE
+  evidence: requisitos/state/frontend-validation.md
+  next_intent: REVIEW

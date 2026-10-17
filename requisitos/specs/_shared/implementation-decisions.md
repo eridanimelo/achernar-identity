@@ -49,3 +49,9 @@ O ambiente de execução **não conseguiu baixar dependências Maven nem executa
 - O **backend não foi compilado com Maven** nem testado contra PostgreSQL. Foi verificado por `javac` sobre o código-fonte (com stubs mínimos das bibliotecas) e por execução dos testes **unitários puros** (92/92) com um executor JUnit mínimo. Os testes `*IT` e `ArchitectureTest` estão escritos, mas **não foram executados**.
 - APIs do Spring Boot 4.1 / Security 7 / Jackson 3 que merecem atenção na primeira compilação: `HttpSecurity.securityMatcher(String...)`, `UsernamePasswordAuthenticationToken.authenticated`, bean `TransactionTemplate`, pacote das anotações Jackson, `ResponseCookie` e as classes de teste do Boot 4.
 - O **frontend foi compilado e testado de fato** (`ng build`, `ng lint`, 62 testes Vitest); não houve teste ponta a ponta contra o backend real.
+
+## 5. Revalidação real do backend — 17/10/2026
+
+As limitações Maven/Docker da execução original (§4) foram resolvidas na retomada. `mvn -B verify` executou com sucesso no host e `mvn -B clean verify` na imagem oficial Maven com Java 25: **96 testes unitários/arquitetura + 19 testes de integração**, zero falhas/erros/ignorados. Integração usa PostgreSQL 18 real via Testcontainers e GreenMail. Expectativas de três cenários foram alinhadas aos contratos aprovados e contadores de taxa isolados entre cenários. Evidência consolidada: `state/backend-validation.md` (símbolo resolvido por `config/paths.yaml`).
+
+Esse resultado comprova build e suíte existente; não substitui a cobertura completa dos cenários das Specs, revisão humana, login social com credenciais reais ou GATE-CLS global.
