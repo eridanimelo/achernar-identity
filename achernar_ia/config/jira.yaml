@@ -1,0 +1,45 @@
+enabled: true
+provider: jira
+integration: mcp
+
+# Projeto ativo desta migração.
+# Troque por qualquer projeto Jira sem alterar Agents/Skills.
+project:
+  key: TS1506CS
+  name: TSE-CSADM-CERES-SOFTWARE
+
+validateProjectViaMcp: true
+
+issueTypes:
+  epic: Epic
+  story: Story
+  task: Task
+  subtask: Subtask
+  bug: Bug
+
+workflow:
+  createIssuesAfterSpecsApproved: true
+  createIssuesAfterPrioritization: true
+
+specIntegration:
+  enabled: true
+  linkSpecInIssue: true
+  # Path de exibição/vinculação da Spec. MUST refletir `workspace.specs` em
+  # config/paths.yaml (prefixado por `project.root`) — não é caminho absoluto.
+  specPathPattern: "requisitos/specs/{{feature}}/"
+  implementationCanStartFrom:
+    - spec
+    - jira
+
+templates:
+  language: pt-BR
+
+components:
+  resolveViaMcp: true
+  default:
+    - Cerimonial TSE
+
+rules:
+  neverInventProject: true
+  neverInventComponent: true
+  validateCriticalDataViaMcp: true

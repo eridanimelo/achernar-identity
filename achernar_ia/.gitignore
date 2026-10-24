@@ -1,0 +1,9 @@
+# Artefatos locais regeneráveis (docs/architecture.md: "não é versionado nem é fonte de verdade")
+
+# Lixo de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Python (scripts/build_index.py e afins)
+__pycache__/
+*.pyc

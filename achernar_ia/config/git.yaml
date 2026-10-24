@@ -1,0 +1,38 @@
+enabled: true
+
+branching:
+  baseBranch: develop
+  protectedBranches:
+    - develop
+    - master
+    - release
+    - "release/*"
+
+branch:
+  createForFeature: true
+  patterns:
+    story: "feature/{{jiraKey}}-{{slug}}"
+    task: "feature/{{jiraKey}}-{{slug}}"
+    bug: "bugfix/{{jiraKey}}-{{slug}}"
+    noJira: "feature/{{slug}}"
+
+commit:
+  enabled: true
+  requireUserApproval: false
+  includeJiraKeyWhenAvailable: true
+  messagePattern: "{{jiraKey}} - {{message}}"
+
+push:
+  enabled: false
+  forbidden: true
+
+merge:
+  enabled: false
+
+rules:
+  branchMustStartFromDevelop: true
+  branchMustBeFeatureWhenImplementing: true
+  requireJiraKeyInBranchNameWhenAvailable: true
+  neverCommitToDevelop: true
+  neverCommitToProtectedBranches: true
+  neverPush: true

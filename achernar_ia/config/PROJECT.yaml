@@ -1,0 +1,31 @@
+# ============================================================
+# PROJECT.yaml — Fonte de verdade do projeto
+# ============================================================
+
+project:
+  id: achernar_identity
+  name: Achernar Identity
+  description: Serviço de identidade reutilizável por projeto (contas, autenticação e sessões) com JWT assimétrico, JWKS e login social; sem SSO entre aplicações independentes.
+  version: 1.0.0
+  organization: eridani
+
+  # NEW/LEGACY não é propriedade global do projeto.
+  # A origem é definida por feature/UC: NEW quando a necessidade não possui
+  # implementação anterior como fonte; LEGACY quando o comportamento deve ser
+  # descoberto/preservado a partir de código, telas, banco ou sistema anterior.
+
+requirements:
+  # BUSINESS | PRD | INTERACTIVE
+  # BUSINESS: business.md/requisito existente é a fonte funcional.
+  # PRD: um PRD existente é a fonte de entrada.
+  # INTERACTIVE: requisitos ainda precisam ser levantados/consolidados.
+  #
+  # MELHORIA: PRD deixa de ser obrigatório quando business.md já existe.
+  source: BUSINESS
+
+config:
+  git: git.yaml
+  jira: jira.yaml
+  paths: paths.yaml
+  PROJECT: PROJECT.yaml
+  technology: technology.yaml

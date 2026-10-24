@@ -1,0 +1,59 @@
+# ============================================================
+# paths.yaml — caminhos do projeto, todos relativos a project.root
+# ============================================================
+#
+# Regras (valem para todo valor abaixo):
+# - nunca usar caminho absoluto: quebra em outra máquina/dev;
+# - todo valor é relativo a `project.root`, nunca ao diretório do motor;
+# - ao reaproveitar o motor em outro projeto, este é o único arquivo de
+#   paths a revisar.
+
+# Raiz do projeto: resolvida a partir do diretório do motor (o diretório
+# que contém este `config/`). `..` = pasta que contém o motor.
+#
+# Layout esperado:
+#   <raiz-do-projeto>/
+#   ├── achernar_ia/      <- motor (framework portátil)
+#   ├── backend/
+#   ├── frontend/
+#   ├── docker/
+#   ├── requisitos/       <- requirements + workspace (saída do framework)
+#   └── legacy/           <- opcional
+project:
+  root: ..
+
+# Artefatos locais regeneráveis (reuse-index.md, graph.html).
+# Não é fonte de verdade nem deve ser versionado.
+cache:
+  root: .cache
+
+backend:
+  root: backend
+
+frontend:
+  root: frontend
+
+# Infraestrutura local. `compose_file` é relativo a `root` — o stack usado
+# (docker-compose, por exemplo) continua em config/technology.yaml.
+docker:
+  root: docker
+  compose_file: docker-compose.yml
+
+# Documentos-fonte de requisitos fornecidos por humano (PRD, docs brutos).
+# Entrada do Agent requirements; nunca gerado pelo framework.
+requirements:
+  root: requisitos
+
+# Saída/estado gerado pelo framework rodando NESTE projeto. Aninhado em
+# requisitos/ de propósito: tudo que é dinâmico fica sob o mesmo guarda-chuva,
+# fora do motor (que é portátil entre projetos).
+workspace:
+  specs: requisitos/specs
+  state: requisitos/state
+  discovery: requisitos/discovery
+  reviews: requisitos/reviews
+
+# Sistema legado (fonte de evidências AS-IS para features LEGACY).
+# Se o diretório não existir, os scripts avisam e ignoram — não falham.
+legacy:
+  root: legacy

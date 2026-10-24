@@ -1,0 +1,43 @@
+feature:
+  id: CHANGE_ME
+  name: CHANGE_ME
+
+  # Origem da feature/UC, não do projeto.
+  # NEW = necessidade sem implementação anterior como fonte obrigatória.
+  # LEGACY = comportamento deve ser descoberto/preservado a partir de implementação anterior.
+  origin: # NEW | LEGACY
+
+approval:
+  status: draft # draft | review | approved | blocked
+
+artifacts:
+  # status deve refletir conteúdo real, não apenas existência do arquivo.
+  context_manifest: pending
+  business: pending
+  api: pending
+  database: pending
+  frontend: pending
+  security: pending
+  tests: pending
+  evidence: not_applicable
+  migration: not_applicable
+
+gates:
+  # pending | pass | requires_review | fail | not_applicable
+  # Critérios em `gates/` (raiz do motor). Registrar apenas o resultado e a evidência mínima.
+  context: pending
+  analysis: pending
+  authorization: pending
+  quality: pending
+  closure: pending
+
+implementation:
+  # conclusão da Spec não altera automaticamente estes campos.
+  backend: not_started
+  frontend: not_started
+
+open_questions: []
+
+jira:
+  issueKey: null
+  synced: false
