@@ -1,0 +1,5 @@
+intent: IMPLEMENTATION
+scope: UC-001-identidade + HU-001 a HU-010
+origin: NEW
+status: in_progress
+next_step: CRUD completo de usuários e perfis, vínculos múltiplos e contrato consumidor

@@ -1,0 +1,8 @@
+executions:
+  - date: 2026-10-24
+    scope: UC-001-identidade
+    origin: NEW
+    result: completed
+    stages: [requirements, specification, backend, frontend, validation]
+    authorization: delegação humana explícita de decisões e execução integral
+    evidence: <reviews>/UC-001-validacao.md

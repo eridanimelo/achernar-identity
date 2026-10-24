@@ -1,0 +1,9 @@
+execution:
+  intent: FULL_SPEC
+  feature: HU-005
+  status: completed
+files:
+  - {path: config/PROJECT.yaml, reason: identidade, artifact: workflow}
+  - {path: config/paths.yaml, reason: raízes, artifact: workflow}
+  - {path: <specs>/UC-001-identidade, reason: dependência explícita dos contratos compartilhados, artifact: workflow}
+  - {path: corporate/requirements, reason: regras e template, artifact: business.md}

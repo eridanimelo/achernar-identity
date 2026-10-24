@@ -1,0 +1,15 @@
+<div class="auth-layout"><aside><span class="eyebrow">ACHERNAR IDENTITY</span><h1>Uma identidade.<br>Novas possibilidades.</h1><p>Um espaço seguro para sua conta. Você no controle do seu acesso.</p><div class="orbit" aria-hidden="true"><span>a</span></div><small>SEGURANÇA EM CADA CONEXÃO</small></aside>
+<section class="panel"><span class="eyebrow">SEU ACESSO COMEÇA AQUI</span><h2>{{heading()}}</h2>
+@if(mode()==='login'){<p class="intro">Entre com seu e-mail e senha para continuar.</p>}
+@if(mode()==='verify'){<p class="intro">Confirme abaixo para validar o endereço de e-mail da sua conta.</p>}
+@if(mode()==='forgot-password' || mode()==='resend'){<p class="intro">Informe seu e-mail para receber as instruções.</p>}
+@if(message()){<div class="notice success" role="status">{{message()}}</div>}
+@if(error()){<div class="notice error" role="alert">{{error()}}</div>}
+<form #form="ngForm" (ngSubmit)="form.valid && submit()">
+@if(mode()==='register'){<label for="name">Nome</label><input id="name" name="name" [(ngModel)]="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Como podemos chamar você?" #nameField="ngModel">@if(nameField.invalid && nameField.touched){<small class="field-error">Informe um nome entre 2 e 100 caracteres.</small>}}
+@if(mode()!=='verify' && mode()!=='reset-password' && mode()!=='activate'){<label for="email">E-mail</label><input id="email" name="email" type="email" [(ngModel)]="email" required email maxlength="254" autocomplete="email" placeholder="voce@exemplo.com" #emailField="ngModel">@if(emailField.invalid && emailField.touched){<small class="field-error">Informe um e-mail válido.</small>}}
+@if(mode()==='login' || mode()==='register' || mode()==='reset-password' || mode()==='activate'){<label for="password">Senha</label><input id="password" name="password" type="password" [(ngModel)]="password" required [minlength]="mode()==='login'?1:12" maxlength="128" [autocomplete]="mode()==='login'?'current-password':'new-password'" #passwordField="ngModel">@if(mode()!=='login'){<small>Use entre 12 e 128 caracteres.</small>}@if(passwordField.invalid && passwordField.touched){<small class="field-error">Confira o tamanho da senha.</small>}}
+<button mat-flat-button type="submit" [disabled]="form.invalid || busy() || !!message()" [attr.aria-busy]="busy()">{{busy()?'Aguarde…':action()}}</button>
+</form>
+@if(mode()==='login'){<a class="secondary" routerLink="/auth/forgot-password">Esqueci minha senha</a><div class="divider"></div><p>Ainda não tem uma conta? <a routerLink="/auth/register">Criar conta</a></p><a class="secondary" routerLink="/auth/resend">Reenviar confirmação de e-mail</a>}@else{<a class="secondary" routerLink="/auth/login">Voltar para entrar</a>}
+</section></div>

@@ -1,0 +1,44 @@
+name: achernar-identity
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: identity
+      POSTGRES_USER: identity
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Configure DATABASE_PASSWORD no arquivo .env}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U identity -d identity"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports: ["127.0.0.1:8025:8025", "127.0.0.1:1025:1025"]
+  backend:
+    build: ../backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/identity
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Configure DATABASE_PASSWORD}
+      SMTP_HOST: mailpit
+      JWT_KEY_FILE: /keys/signing-key.json
+      JWT_GENERATE_KEY: "true"
+      JWT_ISSUER: ${JWT_ISSUER:-http://localhost:8080}
+      JWT_ADDITIONAL_AUDIENCES: ${JWT_ADDITIONAL_AUDIENCES:-}
+      COOKIE_SECURE: "false"
+      ACTION_URL: http://localhost:4200
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Configure ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Configure ADMIN_PASSWORD}
+    volumes: ["signing_keys:/keys"]
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      mailpit: {condition: service_started}
+  frontend:
+    build: ../frontend
+    ports: ["127.0.0.1:4200:8080"]
+    depends_on: [backend]
+volumes:
+  postgres_data:
+  signing_keys:

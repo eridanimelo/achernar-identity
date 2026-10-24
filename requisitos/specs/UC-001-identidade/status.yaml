@@ -1,0 +1,33 @@
+feature:
+  id: UC-001
+  name: Identidade
+  origin: NEW
+approval:
+  status: approved
+  authority: delegação humana explícita em 2026-10-24
+artifacts:
+  business: defined
+  api: defined
+  database: defined
+  frontend: defined
+  security: defined
+  tests: defined
+  context_manifest: defined
+gates:
+  context: pass
+  authorization: pass
+  analysis: pass
+  quality: pending
+  closure: pending
+implementation:
+  backend: in_progress
+  frontend: in_progress
+open_questions: []
+
+validation:
+  backend_unit_tests: 5
+  backend_integration_tests: 5
+  frontend_unit_tests: 6
+  browser_tests: 2
+  docker_runtime: verified
+  report: <reviews>/UC-001-validacao.md

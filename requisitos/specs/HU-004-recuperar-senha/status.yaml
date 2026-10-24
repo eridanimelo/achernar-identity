@@ -1,0 +1,19 @@
+feature:
+  id: HU-004
+  name: Recuperar senha
+  origin: NEW
+approval:
+  status: approved
+  authority: decisão delegada pelo humano
+contracts:
+  source: <specs>/UC-001-identidade
+  reason: contratos compartilhados explícitos do módulo
+implementation:
+  backend: in_progress
+  frontend: in_progress
+gates:
+  context: pass
+  authorization: pass
+  analysis: pending
+  quality: pending
+  closure: pending

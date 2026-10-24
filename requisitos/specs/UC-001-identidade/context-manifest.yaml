@@ -1,0 +1,42 @@
+execution:
+  intent: FULL_SPEC
+  feature: UC-001
+  status: completed
+  authorization: usuário delegou decisões e todas as etapas até implementação
+files:
+  - {path: config/PROJECT.yaml, reason: identidade do projeto, artifact: workflow}
+  - {path: config/paths.yaml, reason: resolução de raízes, artifact: workflow}
+  - {path: subagents/requirements/AGENT.md, reason: contrato funcional, artifact: business.md}
+  - {path: subagents/specification/AGENT.md, reason: contrato da Spec, artifact: workflow}
+  - {path: .agents/skills/specification/SKILL.md, reason: processo, artifact: workflow}
+  - {path: corporate/requirements, reason: regras e template, artifact: business.md}
+  - {path: corporate/api, reason: regras e template, artifact: api.md}
+  - {path: corporate/database, reason: regras e template, artifact: database.md}
+  - {path: corporate/security, reason: regras e template, artifact: security.md}
+  - {path: corporate/testing, reason: regras e template, artifact: tests.md}
+  - {path: .agents/skills/ui-ux-design/SKILL.md, reason: interface e pacote corporativo ausente, artifact: frontend.md}
+  - {path: rules/specification/spec-structure.md, reason: estrutura, artifact: workflow}
+implementation_context:
+  - config/technology.yaml
+  - config/git.yaml
+  - subagents/backend/AGENT.md
+  - subagents/frontend/AGENT.md
+  - .agents/skills/backend/SKILL.md
+  - .agents/skills/frontend/SKILL.md
+  - rules/architecture/principles.md
+  - rules/architecture/layers.md
+  - rules/backend/java-backend.md
+  - rules/api/api.md
+  - rules/database/database.md
+  - rules/quality/quality.md
+  - rules/reuse/reuse.md
+  - rules/frontend/angular-architecture.md
+  - rules/context/context-economy.md
+  - rules/context/session-lifecycle.md
+  - gates/contexto.md
+  - gates/autorizacao.md
+  - gates/analise.md
+  - gates/qualidade.md
+reuse:
+  backend: CREATE; diretório vazio confirmado por especialista
+  frontend: CREATE; diretório vazio confirmado por especialista

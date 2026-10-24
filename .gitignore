@@ -1,0 +1,11 @@
+**/target/
+**/node_modules/
+**/.angular/
+**/dist/
+**/.local/
+.env
+**/.env
+.DS_Store
+.cache/
+**/test-results/
+**/playwright-report/

@@ -1,0 +1,10 @@
+specs:
+  - id: UC-001
+    slug: identidade
+    origin: NEW
+    approval: approved
+    backend: completed
+    frontend: completed
+    quality: pass
+    closure: pass
+    pending: []

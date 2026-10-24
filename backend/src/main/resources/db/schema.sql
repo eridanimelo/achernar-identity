@@ -1,0 +1,23 @@
+CREATE TABLE app_user (
+ id UUID PRIMARY KEY, name VARCHAR(100) NOT NULL, email VARCHAR(254) NOT NULL UNIQUE,
+ password_hash VARCHAR(512) NOT NULL, role VARCHAR(10) NOT NULL CHECK (role IN ('USER','ADMIN')),
+ status VARCHAR(10) NOT NULL CHECK (status IN ('ACTIVE','BLOCKED','DELETED')),
+ verified BOOLEAN NOT NULL DEFAULT FALSE, session_version BIGINT NOT NULL DEFAULT 0,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX app_user_listing ON app_user(created_at DESC, id) WHERE status <> 'DELETED';
+CREATE TABLE email_action (
+ id UUID PRIMARY KEY, user_id UUID NOT NULL REFERENCES app_user(id), token_hash CHAR(64) NOT NULL UNIQUE,
+ kind VARCHAR(6) NOT NULL CHECK (kind IN ('VERIFY','RESET')), expires_at TIMESTAMPTZ NOT NULL,
+ consumed_at TIMESTAMPTZ
+);
+CREATE TABLE mail_outbox (
+ id UUID PRIMARY KEY, recipient VARCHAR(254) NOT NULL, subject VARCHAR(150) NOT NULL, body TEXT NOT NULL,
+ attempts INTEGER NOT NULL DEFAULT 0, next_attempt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ sent_at TIMESTAMPTZ
+);
+CREATE INDEX mail_outbox_pending ON mail_outbox(next_attempt) WHERE sent_at IS NULL;
+CREATE TABLE security_audit_event (
+ id UUID PRIMARY KEY, actor_id UUID, target_id UUID, action VARCHAR(40) NOT NULL,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

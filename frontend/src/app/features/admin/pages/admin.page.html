@@ -1,0 +1,1 @@
+<app-user-list [data]="data()" [editing]="editing()" [profileOptions]="options()" (opened)="open($event)" (saved)="save($event)" (cancelled)="editing.set(null)" [selfId]="session.user()?.id??''" [busy]="busy()" [message]="message()" [error]="error()" (searched)="search($event)" (paged)="load($event)" (acted)="act($event)" />
