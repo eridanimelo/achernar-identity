@@ -1,10 +1,11 @@
 import { Component, effect, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { A11yModule } from '@angular/cdk/a11y';
 import { Page } from '../../../core/models/page.model';
 import { AccessProfile, ProfileDraft, ProfileQuery } from '../models/profile.model';
-@Component({selector:'app-profile-catalog',standalone:true,imports:[FormsModule,MatButtonModule,A11yModule],templateUrl:'./profile-catalog.component.html',styleUrl:'./profile-catalog.component.scss'})
+@Component({selector:'app-profile-catalog',standalone:true,imports:[FormsModule,MatButtonModule,MatIconModule,A11yModule],templateUrl:'./profile-catalog.component.html',styleUrl:'./profile-catalog.component.scss'})
 export class ProfileCatalogComponent {
  readonly data=input<Page<AccessProfile>|null>(null);readonly busy=input(false);readonly error=input('');readonly message=input('');readonly editing=input<ProfileDraft|null>(null);
  readonly searched=output<ProfileQuery>();readonly created=output<void>();readonly edited=output<string>();readonly saved=output<ProfileDraft>();readonly cancelled=output<void>();readonly toggled=output<AccessProfile>();readonly removed=output<string>();readonly pendingDelete=signal<AccessProfile|null>(null);

@@ -38,3 +38,7 @@ visual_identity:
   status: completed
   source: <frontend>/src/assets/logo.png
   report: <reviews>/UC-001-identidade-visual.md
+
+action_icons:
+  status: completed
+  report: <reviews>/UC-001-icones-navegacao.md

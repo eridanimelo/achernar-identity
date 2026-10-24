@@ -64,3 +64,7 @@ button[mat-flat-button]:not(:disabled):hover { filter: brightness(1.08); }
 button[mat-flat-button] { transition: filter 180ms ease, box-shadow 180ms ease; }
 input, textarea, select { transition: border-color 180ms ease; }
 input:hover, textarea:hover, select:hover { border-color: var(--accent); }
+
+button mat-icon { width: 18px; height: 18px; font-size: 18px; flex-shrink: 0; }
+button[mat-button], button[mat-flat-button] { white-space: nowrap; }
+button[mat-button].danger:disabled { color: var(--muted) !important; opacity: .6; }

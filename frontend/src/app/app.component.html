@@ -3,17 +3,15 @@
     <a class="brand" routerLink="/" aria-label="Achernar Identity — início">
       <img src="/assets/logo.png" alt="Achernar Identity" width="2171" height="724" fetchpriority="high">
     </a>
-    <nav aria-label="Navegação principal">
-      @if(session.user()) {
-        <a routerLink="/account">{{'account' | transloco}}</a>
+    @if(session.user()) {
+      <nav aria-label="Navegação principal">
+        <a routerLink="/account" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon svgIcon="user" aria-hidden="true" />{{'account' | transloco}}</a>
         @if(session.user()?.profiles?.includes('ADMIN')) {
-          <a routerLink="/admin">{{'users' | transloco}}</a>
-          <a routerLink="/profiles">Perfis</a>
+          <a routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon svgIcon="users" aria-hidden="true" />{{'users' | transloco}}</a>
+          <a routerLink="/profiles" routerLinkActive="active" ariaCurrentWhenActive="page"><mat-icon svgIcon="shield" aria-hidden="true" />Perfis</a>
         }
-      } @else {
-        <a routerLink="/auth/login">{{'enter' | transloco}}</a>
-      }
-    </nav>
+      </nav>
+    }
   </div>
 </header>
 <main><router-outlet /></main>

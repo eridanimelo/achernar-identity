@@ -24,6 +24,11 @@
                 "glob": "logo.png",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "icons.svg",
+                "input": "src/assets",
+                "output": "assets"
               }
             ]
           },

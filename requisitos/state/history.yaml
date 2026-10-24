@@ -17,3 +17,8 @@ executions:
     intent: FRONTEND
     result: completed
     evidence: <reviews>/UC-001-identidade-visual.md
+  - date: 2026-10-24
+    intent: FRONTEND
+    scope: ícones de ações e remoção do Entrar redundante
+    result: completed
+    evidence: <reviews>/UC-001-icones-navegacao.md

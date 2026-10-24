@@ -1,11 +1,11 @@
 intent: FRONTEND
-scope: identidade visual do módulo Usuários e Perfis
+scope: ícones de ações e navegação do módulo Usuários e Perfis
 origin: NEW
 status: completed
 quality: pass
 closure: pass
-report: <reviews>/UC-001-identidade-visual.md
-next_step: escopo visual concluído; nenhuma etapa automática
+report: <reviews>/UC-001-icones-navegacao.md
+next_step: ajuste solicitado concluído; nenhuma etapa automática
 runtime:
   application: http://localhost:4200
   mode: docker-compose

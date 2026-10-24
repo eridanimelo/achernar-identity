@@ -14,3 +14,6 @@ Navegação administrativa distingue Usuários e Perfis. Usuários: botão Novo 
 
 ## Identidade visual — logo fornecida pelo humano
 Usar a logo original de frontend/src/assets/logo.png no cabeçalho e no painel de acesso, preservando transparência, proporção e conteúdo. Paleta derivada: azul elétrico, ciano e violeta, com superfícies legíveis em tema claro e escuro. Nome branco da marca sempre sobre superfície escura. Destaques e gradientes remetem à órbita do símbolo. Aplicar tokens globais e tema Material para estender a identidade a usuários, perfis, conta e formulários. Layout responsivo, foco visível, contraste e templates/estilos separados preservados.
+
+## Ações com ícones
+Usar um único conjunto de ícones vetoriais locais, com traços consistentes, integrado ao design system. Excluir usa lixeira, editar usa lápis, buscar usa lupa, bloquear/desbloquear usa cadeado, criação e navegação usam símbolos correspondentes. Manter rótulos textuais e ícones decorativos ocultos de leitores de tela. A área pública de autenticação exibe somente a marca no cabeçalho, sem link Entrar redundante. Navegação autenticada mantém Conta, Usuários e Perfis com ícones e indicação da página atual. Preservar funcionamento, nomes acessíveis e áreas de toque.

@@ -54,3 +54,7 @@ h2 { font-size: 28px; letter-spacing: -1px; margin: 18px 0 12px; }
   aside h1 { font-size: 26px; margin: 16px 0 0; }
   .panel { padding: 28px; }
 }
+
+.secondary, .panel > p a { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.panel > p a { display: inline-flex; vertical-align: middle; }
+.secondary mat-icon, .panel > p a mat-icon { width: 16px; height: 16px; font-size: 16px; flex-shrink: 0; }
