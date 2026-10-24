@@ -1,0 +1,89 @@
+execution:
+  intent: FULL_SPEC
+  feature: UC-001
+  status: completed
+  authorization: usuário delegou decisões e todas as etapas até implementação
+files:
+  - {path: config/PROJECT.yaml, reason: identidade do projeto, artifact: workflow}
+  - {path: config/paths.yaml, reason: resolução de raízes, artifact: workflow}
+  - {path: subagents/requirements/AGENT.md, reason: contrato funcional, artifact: business.md}
+  - {path: subagents/specification/AGENT.md, reason: contrato da Spec, artifact: workflow}
+  - {path: .agents/skills/specification/SKILL.md, reason: processo, artifact: workflow}
+  - {path: corporate/requirements, reason: regras e template, artifact: business.md}
+  - {path: corporate/api, reason: regras e template, artifact: api.md}
+  - {path: corporate/database, reason: regras e template, artifact: database.md}
+  - {path: corporate/security, reason: regras e template, artifact: security.md}
+  - {path: corporate/testing, reason: regras e template, artifact: tests.md}
+  - {path: .agents/skills/ui-ux-design/SKILL.md, reason: interface e pacote corporativo ausente, artifact: frontend.md}
+  - {path: rules/specification/spec-structure.md, reason: estrutura, artifact: workflow}
+implementation_context:
+  - config/technology.yaml
+  - config/git.yaml
+  - subagents/backend/AGENT.md
+  - subagents/frontend/AGENT.md
+  - .agents/skills/backend/SKILL.md
+  - .agents/skills/frontend/SKILL.md
+  - rules/architecture/principles.md
+  - rules/architecture/layers.md
+  - rules/backend/java-backend.md
+  - rules/api/api.md
+  - rules/database/database.md
+  - rules/quality/quality.md
+  - rules/reuse/reuse.md
+  - rules/frontend/angular-architecture.md
+  - rules/context/context-economy.md
+  - rules/context/session-lifecycle.md
+  - gates/contexto.md
+  - gates/autorizacao.md
+  - gates/analise.md
+  - gates/qualidade.md
+reuse:
+  backend: CREATE; diretório vazio confirmado por especialista
+  frontend: CREATE; diretório vazio confirmado por especialista
+
+revision_usuarios_perfis:
+  intent: IMPLEMENTATION
+  authorization: decisões e execução integral delegadas e reafirmadas pelo usuário
+  sources:
+    - {path: config/PROJECT.yaml, reason: identidade, artifact: workflow}
+    - {path: <state>/current.yaml, reason: estado consolidado, artifact: workflow}
+    - {path: <specs>/UC-001-identidade/business.md, reason: revisão do escopo, artifact: business.md}
+    - {path: <specs>/UC-001-identidade/api.md, reason: contrato ampliado, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/database.md, reason: migração incremental, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/security.md, reason: segurança, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/frontend.md, reason: telas e fluxos, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/tests.md, reason: validação, artifact: implementation}
+    - {path: <backend>/src/main/java/com/achernar/identity, reason: reuso e extensão dos slices, artifact: implementation}
+    - {path: <frontend>/src/app, reason: reuso e extensão das features, artifact: implementation}
+  reuse: MIXED; EXTEND e COMPOSE existentes; CREATE profiles e editor
+  validation: <reviews>/UC-001-usuarios-perfis-validacao.md
+
+revision_visual_logo:
+  intent: FRONTEND
+  scope: identidade visual global e painel de acesso
+  authorization: logo fornecida e aplicação visual solicitada pelo humano
+  files:
+    - {path: config/PROJECT.yaml, reason: identidade do projeto, artifact: workflow}
+    - {path: <frontend>/src/assets/logo.png, reason: referência visual original, artifact: frontend}
+    - {path: <frontend>/src/styles.scss, reason: tokens e Material existentes, artifact: frontend}
+    - {path: <frontend>/src/app/app.component.html, reason: marca e navegação existentes, artifact: frontend}
+    - {path: <frontend>/src/app/app.component.scss, reason: composição existente, artifact: frontend}
+    - {path: <frontend>/src/app/features/auth/components/auth-form.component.html, reason: painel existente, artifact: frontend}
+    - {path: <frontend>/src/app/features/auth/components/auth-form.component.scss, reason: painel existente, artifact: frontend}
+    - {path: <frontend>/angular.json, reason: publicação do asset, artifact: frontend}
+    - {path: .agents/skills/ui-ux-design/references/theming.md, reason: contraste e temas, artifact: frontend}
+  reuse: EXTEND; componentes e tokens conhecidos, nenhuma nova abstração
+  functional_change: false
+
+revision_action_icons:
+  intent: FRONTEND
+  authorization: solicitação humana de mais ícones e remoção do Entrar redundante
+  reuse: COMPOSE Angular Material já instalado e EXTEND componentes conhecidos
+  sources:
+    - <frontend>/src/app/app.component.html
+    - <frontend>/src/app/features/admin/components
+    - <frontend>/src/app/features/profiles/components
+    - <frontend>/src/app/features/account/components
+    - <frontend>/src/app/features/auth/components
+    - <frontend>/node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
+  scope: apresentação de ações e navegação; sem nova abstração de aplicação

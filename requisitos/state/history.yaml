@@ -1,0 +1,24 @@
+executions:
+  - date: 2026-10-24
+    scope: UC-001-identidade
+    origin: NEW
+    result: completed
+    stages: [requirements, specification, backend, frontend, validation]
+    authorization: delegação humana explícita de decisões e execução integral
+    evidence: <reviews>/UC-001-validacao.md
+  - date: 2026-10-24
+    scope: Usuários e Perfis; HU-001 a HU-010
+    result: completed
+    authorization: ampliação e decisões humanas delegadas e reafirmadas
+    changes: CRUD perfis, associação múltipla, convite, CRUD usuário e consumidor JWT
+    evidence: <reviews>/UC-001-usuarios-perfis-validacao.md
+  - date: 2026-10-24
+    scope: identidade visual baseada na logo fornecida
+    intent: FRONTEND
+    result: completed
+    evidence: <reviews>/UC-001-identidade-visual.md
+  - date: 2026-10-24
+    intent: FRONTEND
+    scope: ícones de ações e remoção do Entrar redundante
+    result: completed
+    evidence: <reviews>/UC-001-icones-navegacao.md

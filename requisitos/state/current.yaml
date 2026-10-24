@@ -1,0 +1,11 @@
+intent: FRONTEND
+scope: ícones de ações e navegação do módulo Usuários e Perfis
+origin: NEW
+status: completed
+quality: pass
+closure: pass
+report: <reviews>/UC-001-icones-navegacao.md
+next_step: ajuste solicitado concluído; nenhuma etapa automática
+runtime:
+  application: http://localhost:4200
+  mode: docker-compose

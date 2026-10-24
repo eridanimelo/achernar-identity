@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: achernar-identity
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/identity}
+    username: ${DATABASE_USER:identity}
+    password: ${DATABASE_PASSWORD}
+  liquibase:
+    change-log: classpath:db/changelog.xml
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${SMTP_TLS:false}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+  tomcat:
+    max-http-form-post-size: 16KB
+  max-http-request-header-size: 16KB
+app:
+  issuer: ${JWT_ISSUER:http://localhost:8080}
+  audience: achernar-identity
+  additional-audiences: ${JWT_ADDITIONAL_AUDIENCES:}
+  key-file: ${JWT_KEY_FILE:./.local/signing-key.json}
+  generate-key: ${JWT_GENERATE_KEY:false}
+  secure-cookie: ${COOKIE_SECURE:true}
+  action-url: ${ACTION_URL:http://localhost:4200}
+  mail-from: ${MAIL_FROM:identity@localhost}
+  admin-email: ${ADMIN_EMAIL:}
+  admin-password: ${ADMIN_PASSWORD:}

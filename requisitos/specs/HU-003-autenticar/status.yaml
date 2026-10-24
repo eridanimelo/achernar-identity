@@ -1,0 +1,21 @@
+feature:
+  id: HU-003
+  name: Autenticar e encerrar sessões
+  origin: NEW
+approval:
+  status: approved
+  authority: decisão delegada pelo humano
+contracts:
+  source: <specs>/UC-001-identidade
+  reason: contratos compartilhados explícitos do módulo
+implementation:
+  backend: completed
+  frontend: completed
+gates:
+  context: pass
+  authorization: pass
+  analysis: pass
+  quality: pass
+  closure: pass
+
+validation: <reviews>/UC-001-usuarios-perfis-validacao.md

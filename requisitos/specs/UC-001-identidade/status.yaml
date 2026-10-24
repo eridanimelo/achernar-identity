@@ -1,0 +1,44 @@
+feature:
+  id: UC-001
+  name: Identidade
+  origin: NEW
+approval:
+  status: approved
+  authority: delegação humana explícita em 2026-10-24
+artifacts:
+  business: defined
+  api: defined
+  database: defined
+  frontend: defined
+  security: defined
+  tests: defined
+  context_manifest: defined
+gates:
+  context: pass
+  authorization: pass
+  analysis: pass
+  quality: pass
+  closure: pass
+implementation:
+  backend: completed
+  frontend: completed
+open_questions: []
+
+validation:
+  backend_unit_tests: 5
+  backend_integration_tests: 9
+  frontend_unit_tests: 9
+  browser_tests: 3
+  docker_runtime: verified
+  report: <reviews>/UC-001-usuarios-perfis-validacao.md
+
+stories: [HU-001, HU-002, HU-003, HU-004, HU-005, HU-006, HU-007, HU-008, HU-009, HU-010]
+
+visual_identity:
+  status: completed
+  source: <frontend>/src/assets/logo.png
+  report: <reviews>/UC-001-identidade-visual.md
+
+action_icons:
+  status: completed
+  report: <reviews>/UC-001-icones-navegacao.md

@@ -1,0 +1,12 @@
+specs:
+  - {id: UC-001, slug: identidade, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-001, slug: cadastrar-conta, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-002, slug: confirmar-email, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-003, slug: autenticar, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-004, slug: recuperar-senha, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-005, slug: manter-conta, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-006, slug: manter-usuarios, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-007, slug: bloquear-usuario, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-008, slug: manter-perfis, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-009, slug: associar-perfis, origin: NEW, approval: approved, backend: completed, frontend: completed, quality: pass, closure: pass, pending: []}
+  - {id: HU-010, slug: consumir-identidade, origin: NEW, approval: approved, backend: completed, frontend: not_applicable, quality: pass, closure: pass, pending: []}
