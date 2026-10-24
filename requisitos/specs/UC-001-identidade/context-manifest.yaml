@@ -40,3 +40,37 @@ implementation_context:
 reuse:
   backend: CREATE; diretório vazio confirmado por especialista
   frontend: CREATE; diretório vazio confirmado por especialista
+
+revision_usuarios_perfis:
+  intent: IMPLEMENTATION
+  authorization: decisões e execução integral delegadas e reafirmadas pelo usuário
+  sources:
+    - {path: config/PROJECT.yaml, reason: identidade, artifact: workflow}
+    - {path: <state>/current.yaml, reason: estado consolidado, artifact: workflow}
+    - {path: <specs>/UC-001-identidade/business.md, reason: revisão do escopo, artifact: business.md}
+    - {path: <specs>/UC-001-identidade/api.md, reason: contrato ampliado, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/database.md, reason: migração incremental, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/security.md, reason: segurança, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/frontend.md, reason: telas e fluxos, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/tests.md, reason: validação, artifact: implementation}
+    - {path: <backend>/src/main/java/com/achernar/identity, reason: reuso e extensão dos slices, artifact: implementation}
+    - {path: <frontend>/src/app, reason: reuso e extensão das features, artifact: implementation}
+  reuse: MIXED; EXTEND e COMPOSE existentes; CREATE profiles e editor
+  validation: <reviews>/UC-001-usuarios-perfis-validacao.md
+
+revision_visual_logo:
+  intent: FRONTEND
+  scope: identidade visual global e painel de acesso
+  authorization: logo fornecida e aplicação visual solicitada pelo humano
+  files:
+    - {path: config/PROJECT.yaml, reason: identidade do projeto, artifact: workflow}
+    - {path: <frontend>/src/assets/logo.png, reason: referência visual original, artifact: frontend}
+    - {path: <frontend>/src/styles.scss, reason: tokens e Material existentes, artifact: frontend}
+    - {path: <frontend>/src/app/app.component.html, reason: marca e navegação existentes, artifact: frontend}
+    - {path: <frontend>/src/app/app.component.scss, reason: composição existente, artifact: frontend}
+    - {path: <frontend>/src/app/features/auth/components/auth-form.component.html, reason: painel existente, artifact: frontend}
+    - {path: <frontend>/src/app/features/auth/components/auth-form.component.scss, reason: painel existente, artifact: frontend}
+    - {path: <frontend>/angular.json, reason: publicação do asset, artifact: frontend}
+    - {path: .agents/skills/ui-ux-design/references/theming.md, reason: contraste e temas, artifact: frontend}
+  reuse: EXTEND; componentes e tokens conhecidos, nenhuma nova abstração
+  functional_change: false

@@ -1,3 +1,20 @@
-<header><a class="brand" routerLink="/">a<span>achernar<span class="sub">IDENTITY</span></span></a><nav aria-label="Navegação principal">
-@if(session.user()){<a routerLink="/account">{{'account' | transloco}}</a>@if(session.user()?.profiles?.includes('ADMIN')){<a routerLink="/admin">{{'users' | transloco}}</a><a routerLink="/profiles">Perfis</a>}}@else{<a routerLink="/auth/login">{{'enter' | transloco}}</a>}
-</nav></header><main><router-outlet /></main><footer>{{'footer' | transloco}}<span>{{'brand' | transloco}}</span></footer>
+<header class="site-header">
+  <div class="header-content">
+    <a class="brand" routerLink="/" aria-label="Achernar Identity — início">
+      <img src="/assets/logo.png" alt="Achernar Identity" width="2171" height="724" fetchpriority="high">
+    </a>
+    <nav aria-label="Navegação principal">
+      @if(session.user()) {
+        <a routerLink="/account">{{'account' | transloco}}</a>
+        @if(session.user()?.profiles?.includes('ADMIN')) {
+          <a routerLink="/admin">{{'users' | transloco}}</a>
+          <a routerLink="/profiles">Perfis</a>
+        }
+      } @else {
+        <a routerLink="/auth/login">{{'enter' | transloco}}</a>
+      }
+    </nav>
+  </div>
+</header>
+<main><router-outlet /></main>
+<footer>{{'footer' | transloco}}<span>{{'brand' | transloco}}</span></footer>

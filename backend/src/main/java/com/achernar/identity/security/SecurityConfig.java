@@ -39,7 +39,7 @@ public class SecurityConfig {
                     var user=users.byId(UUID.fromString(jwt.getSubject())).orElseThrow(SecurityConfig::invalidSession);
                     Number version=jwt.getClaim("version");
                     if(!user.verified() || !user.status().equals("ACTIVE") || version==null || user.sessionVersion()!=version.longValue()
-                        || !user.profiles().equals(jwt.getClaimAsStringList("roles")) || !Integer.valueOf(2).equals(jwt.getClaim("claim_version"))) throw invalidSession();
+                        || !user.profiles().equals(jwt.getClaimAsStringList("roles")) || !(jwt.getClaim("claim_version") instanceof Number cv && cv.intValue()==2)) throw invalidSession();
                     return new JwtAuthenticationToken(jwt,user.profiles().stream().map(code->new SimpleGrantedAuthority("ROLE_"+code)).toList(),user.id().toString());
                 } catch(IllegalArgumentException e) { throw invalidSession(); }
             })).authenticationEntryPoint((req,res,e) -> { res.setStatus(401); res.setContentType("application/json"); res.getWriter().write("{\"code\":\"UNAUTHORIZED\",\"message\":\"Entre novamente para continuar.\"}"); }))

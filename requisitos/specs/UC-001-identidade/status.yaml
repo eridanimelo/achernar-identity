@@ -17,17 +17,24 @@ gates:
   context: pass
   authorization: pass
   analysis: pass
-  quality: pending
-  closure: pending
+  quality: pass
+  closure: pass
 implementation:
-  backend: in_progress
-  frontend: in_progress
+  backend: completed
+  frontend: completed
 open_questions: []
 
 validation:
   backend_unit_tests: 5
-  backend_integration_tests: 5
-  frontend_unit_tests: 6
-  browser_tests: 2
+  backend_integration_tests: 9
+  frontend_unit_tests: 9
+  browser_tests: 3
   docker_runtime: verified
-  report: <reviews>/UC-001-validacao.md
+  report: <reviews>/UC-001-usuarios-perfis-validacao.md
+
+stories: [HU-001, HU-002, HU-003, HU-004, HU-005, HU-006, HU-007, HU-008, HU-009, HU-010]
+
+visual_identity:
+  status: completed
+  source: <frontend>/src/assets/logo.png
+  report: <reviews>/UC-001-identidade-visual.md

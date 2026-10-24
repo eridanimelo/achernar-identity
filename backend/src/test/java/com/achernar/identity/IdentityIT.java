@@ -38,14 +38,14 @@ class IdentityIT {
  String id(String email){return db.queryForObject("SELECT id::text FROM app_user WHERE email=?",String.class,email);}
  String credentials(String email,String pass){return "{\"email\":\""+email+"\",\"password\":\""+pass+"\"}";}
  void register(Client client,String email)throws Exception{assertEquals(202,client.post("/api/auth/register","{\"name\":\"Pessoa Teste\",\"email\":\""+email+"\",\"password\":\""+password+"\",\"role\":\"ADMIN\"}").statusCode());}
- @BeforeEach void clear(){db.execute("TRUNCATE email_action,mail_outbox,security_audit_event,app_user CASCADE");}
+ @BeforeEach void clear(){db.execute("TRUNCATE email_action,mail_outbox,security_audit_event,app_user CASCADE");db.execute("DELETE FROM access_profile WHERE NOT system");}
  @Test void completeIdentityLifecycle()throws Exception{
   var user=new Client();var visitor=new Client();var admin=new Client();
   assertEquals(403,visitor.call("POST","/api/auth/register","{}",false).statusCode());
   assertEquals(401,visitor.call("GET","/api/me",null,false).statusCode());
   assertEquals(400,user.post("/api/auth/register","{\"name\":\"A\",\"email\":\"bad\",\"password\":\"tiny\"}").statusCode());
   register(user,"user@example.com");
-  assertEquals("USER",db.queryForObject("SELECT role FROM app_user WHERE email='user@example.com'",String.class));
+  assertEquals("USER",db.queryForObject("SELECT p.code FROM app_user u JOIN user_profile up ON up.user_id=u.id JOIN access_profile p ON p.id=up.profile_id WHERE u.email='user@example.com'",String.class));
   assertEquals(403,user.post("/api/auth/login",credentials("user@example.com",password)).statusCode());
   String verify=token("user@example.com");
   assertEquals(400,user.post("/api/auth/reset-password","{\"token\":\""+verify+"\",\"password\":\"OutraSenha123456!\"}").statusCode());
@@ -64,7 +64,7 @@ class IdentityIT {
   assertEquals(401,user.call("GET","/api/me",null,false).statusCode());
   assertEquals(400,user.post("/api/auth/reset-password","{\"token\":\""+reset+"\",\"password\":\"OutraSenha123456!\"}").statusCode());
   assertEquals(200,user.post("/api/auth/login",credentials("user@example.com","OutraSenha123456!")).statusCode());
-  register(admin,"admin@example.com");db.update("UPDATE app_user SET role='ADMIN',verified=true WHERE email='admin@example.com'");
+  register(admin,"admin@example.com");db.update("UPDATE app_user SET verified=true WHERE email='admin@example.com'");db.update("INSERT INTO user_profile(user_id,profile_id) SELECT u.id,p.id FROM app_user u CROSS JOIN access_profile p WHERE u.email='admin@example.com' AND p.code='ADMIN'");
   assertEquals(200,admin.post("/api/auth/login",credentials("admin@example.com",password)).statusCode());
   assertEquals(200,admin.call("GET","/api/admin/users?q=Nome&page=0&size=1",null,false).statusCode());
   assertEquals(400,admin.call("GET","/api/admin/users?size=101",null,false).statusCode());

@@ -16,9 +16,9 @@ Todas as operações usam /api. Corpos e respostas são objetos JSON.
 | GET /me | nenhuma | 200, usuário | autenticado |
 | PATCH /me | name | 200, usuário | autenticado |
 | GET /admin/users | q, page, size | 200, items, page, size, total, totalPages | ADMIN |
-| PATCH /admin/users/{id} | role e/ou status | 200, usuário | ADMIN |
+| PATCH /admin/users/{id} | name, email, profiles e/ou status; role legado opcional | 200, usuário | ADMIN |
 | DELETE /admin/users/{id} | nenhuma | 204 | ADMIN |
-Usuário de saída: id, name, email, role, status, verified, createdAt. Campos obrigatórios nas entradas indicadas; PATCH administrativo aceita role USER/ADMIN e status ACTIVE/BLOCKED, ao menos um. Identificador válido obrigatório.
+Usuário de saída: id, name, email, role legado, profiles, assignedProfiles, status, verified, createdAt. Campos obrigatórios nas entradas indicadas; PATCH administrativo aceita name, email, profiles e status ACTIVE/BLOCKED; role USER/ADMIN é compatibilidade opcional, não combinável com profiles. Exige ao menos um campo. Identificador válido obrigatório.
 ## Paginação
 page começa em 0; size padrão 20, mínimo 1, máximo 100; q até 100 caracteres; ordem estável por criação decrescente e identificador. Busca literal sem diferenciação de caixa por nome/e-mail. Excluídos omitidos.
 ## Erros

@@ -1,7 +1,7 @@
 # Database Spec — UC-001 Identidade
 Origem NEW; status APPROVED por delegação.
 ## Objetivo e estruturas lógicas
-Conta: identificação, nome, e-mail único normalizado, credencial protegida, perfil USER/ADMIN, estado ACTIVE/BLOCKED/DELETED, confirmação, versão de sessão e criação.
+Conta: identificação, nome, e-mail único normalizado, credencial protegida, conjunto de perfis associados, estado ACTIVE/BLOCKED/DELETED, confirmação, versão de sessão e criação.
 Ação de e-mail: identificador, conta de origem, finalidade VERIFY/RESET, prova protegida única, expiração e data de consumo. Conta possui várias ações; ação pertence a uma conta.
 Fila de mensagens: destinatário, assunto, conteúdo, tentativas, próxima tentativa e data de envio. Persistida junto à ação para evitar perda entre gravação e envio.
 Evento de auditoria: identificação, ator opcional, alvo opcional, ação e data; não contém credenciais.

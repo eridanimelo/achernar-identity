@@ -9,11 +9,13 @@ contracts:
   source: <specs>/UC-001-identidade
   reason: contratos compartilhados explícitos do módulo
 implementation:
-  backend: in_progress
-  frontend: in_progress
+  backend: completed
+  frontend: completed
 gates:
   context: pass
   authorization: pass
-  analysis: pending
-  quality: pending
-  closure: pending
+  analysis: pass
+  quality: pass
+  closure: pass
+
+validation: <reviews>/UC-001-usuarios-perfis-validacao.md

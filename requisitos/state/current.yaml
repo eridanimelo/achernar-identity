@@ -1,5 +1,11 @@
-intent: IMPLEMENTATION
-scope: UC-001-identidade + HU-001 a HU-010
+intent: FRONTEND
+scope: identidade visual do módulo Usuários e Perfis
 origin: NEW
-status: in_progress
-next_step: CRUD completo de usuários e perfis, vínculos múltiplos e contrato consumidor
+status: completed
+quality: pass
+closure: pass
+report: <reviews>/UC-001-identidade-visual.md
+next_step: escopo visual concluído; nenhuma etapa automática
+runtime:
+  application: http://localhost:4200
+  mode: docker-compose

@@ -41,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
         protect(user,nextCodes==null?user.profiles():nextCodes,nextStatus,emailChanged);
         if(emailChanged && users.byEmail(nextEmail).isPresent())throw new ApiException(HttpStatus.CONFLICT,"E-mail já cadastrado.");
         if(ids!=null)users.assign(target,ids);
-        users.update(target,name==null?user.name():UserNames.normalize(name),nextEmail,nextStatus,user.verified() && !emailChanged);
+        try{users.update(target,name==null?user.name():UserNames.normalize(name),nextEmail,nextStatus,user.verified() && !emailChanged);}catch(org.springframework.dao.DuplicateKeyException e){throw new ApiException(HttpStatus.CONFLICT,"E-mail já cadastrado.");}
         if(emailChanged){actions.remove(target);auth.sendLink(target,user.passwordHash().equals("invited")?"INVITE":"VERIFY");}
         audit.record(actor,target,"ADMIN_CHANGE");return UserDto.from(users.byId(target).orElseThrow());
     }
