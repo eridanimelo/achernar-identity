@@ -22,3 +22,9 @@ executions:
     scope: ícones de ações e remoção do Entrar redundante
     result: completed
     evidence: <reviews>/UC-001-icones-navegacao.md
+  - date: 2026-10-24
+    intent: SECURITY
+    scope: correção dos 34 achados de segurança (SCA, SAST em testes e cabeçalhos Nginx)
+    result: completed
+    changes: Spring Boot 4.1.2, bcprov 1.85, cabeçalhos COOP/COEP/CORP/Permissions-Policy e cache no Nginx
+    evidence: <reviews>/SEC-001-correcao-vulnerabilidades.md
