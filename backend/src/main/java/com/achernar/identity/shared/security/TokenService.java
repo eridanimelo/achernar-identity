@@ -1,14 +1,14 @@
 package com.achernar.identity.shared.security;
 
-import com.achernar.identity.users.domain.model.UserEntity;
+import com.achernar.identity.users.entity.UserEntity;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.jwk.*;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import java.nio.file.*;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.security.*;
-import java.security.interfaces.RSAPublicKey;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Value;

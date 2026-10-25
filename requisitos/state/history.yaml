@@ -34,3 +34,15 @@ executions:
     result: completed
     changes: um controller por feature, um service por caso de uso, domain/{model,repository,exception} e shared transversal; sem alteração de contrato HTTP, transações ou segurança
     evidence: <backend>/docs/adr/ADR-001-vertical-slice.md
+  - date: 2026-10-25
+    intent: ARCHITECTURE
+    scope: alinhamento do backend ao template Java (Service/ServiceImpl e pacotes por feature)
+    result: completed
+    changes: interfaces de service em service/ e implementações em service/impl/; controller, dto, entity, repository, exception; substitui parcialmente o ADR-001; sem alteração de contrato HTTP, transações ou segurança
+    evidence: <backend>/docs/adr/ADR-002-service-impl-e-pacotes.md
+  - date: 2026-10-25
+    intent: ARCHITECTURE
+    scope: repositories como interfaces Spring Data JPA
+    result: completed
+    changes: UserRepository, ProfileRepository e ActionRepository passam a JpaRepository com entidades JPA internas e @Query; JDBC mantido em Audit, MailQueue e MailDelivery; jpa_hibernate_domain true; sem alteração de contrato HTTP, transações ou segurança
+    evidence: <backend>/docs/adr/ADR-003-spring-data-jpa-repositories.md

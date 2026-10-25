@@ -1,14 +1,14 @@
 package com.achernar.identity.shared.exception;
 
-import com.achernar.identity.profiles.domain.exception.ProfileNotFoundException;
-import com.achernar.identity.users.domain.exception.UserNotFoundException;
+import com.achernar.identity.profiles.exception.ProfileNotFoundException;
+import com.achernar.identity.users.exception.UserNotFoundException;
 import java.util.Map;
 import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
 @RestControllerAdvice
 public class ApiErrors {

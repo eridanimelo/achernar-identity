@@ -1,6 +1,7 @@
 # ADR-001 — Backend organizado em vertical slices por feature
 
-- **Status:** aceito
+- **Status:** aceito; layout de pacotes e decisão de eliminar interfaces de
+  service substituídos por `ADR-002-service-impl-e-pacotes.md`
 - **Data:** 2026-10-25
 - **Escopo:** `backend/src/main/java/com/achernar/identity`
 - **Feature:** UC-001 Identidade

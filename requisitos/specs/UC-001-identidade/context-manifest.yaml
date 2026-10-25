@@ -101,3 +101,32 @@ revision_vertical_slice:
   reuse: MIXED; repositories e portas existentes preservados, camadas internas reorganizadas e services por caso de uso criados
   functional_change: false
   validation: <backend>/docs/adr/ADR-001-vertical-slice.md
+
+revision_service_impl:
+  intent: ARCHITECTURE
+  scope: alinhamento ao template Java com interfaces de service em service/ e implementações em service/impl, pacotes controller, dto, entity, repository, exception
+  authorization: decisão humana explícita de adotar Service/ServiceImpl e o padrão de pacotes do template
+  sources:
+    - {path: rules/backend/java-backend.md, reason: exigência de interface Service e ServiceImpl, artifact: implementation}
+    - {path: .agents/skills/backend/assets/java-backend.md, reason: layout de pacotes alvo, artifact: implementation}
+    - {path: <backend>/docs/adr/ADR-001-vertical-slice.md, reason: decisão anterior parcialmente substituída, artifact: implementation}
+    - {path: <backend>/src/main/java/com/achernar/identity, reason: código AS-IS, artifact: implementation}
+    - {path: <backend>/src/test/java/com/achernar/identity, reason: validação existente, artifact: tests}
+  reuse: MIXED; EXTEND do código existente com separação interface/implementação e MOVE de pacotes, sem CREATE de comportamento
+  functional_change: false
+  validation: <backend>/docs/adr/ADR-002-service-impl-e-pacotes.md
+
+revision_spring_data_repositories:
+  intent: ARCHITECTURE
+  scope: repositories como interfaces Spring Data JPA (JpaRepository) mantendo contratos e comportamento dos services
+  authorization: decisão humana explícita de usar interfaces do Spring Data nos repositories
+  sources:
+    - {path: config/technology.yaml, reason: decisão de stack, artifact: implementation}
+    - {path: rules/backend/java-backend.md, reason: repositories e @Query, artifact: implementation}
+    - {path: <backend>/docs/adr/ADR-002-service-impl-e-pacotes.md, reason: decisão anterior, artifact: implementation}
+    - {path: <backend>/src/main/java/com/achernar/identity, reason: repositories AS-IS, artifact: implementation}
+    - {path: <backend>/src/main/resources/db, reason: schema validado por Liquibase/Hibernate, artifact: database}
+    - {path: <backend>/src/test/java/com/achernar/identity, reason: preservação de comportamento, artifact: tests}
+  reuse: EXTEND; entidades JPA internas + projeções e SQL nativo reaproveitando as consultas existentes
+  functional_change: false
+  validation: <backend>/docs/adr/ADR-003-spring-data-jpa-repositories.md

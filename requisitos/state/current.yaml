@@ -1,11 +1,11 @@
 intent: ARCHITECTURE
 feature: UC-001-identidade
-scope: refatoração estrutural do backend em vertical slices por feature, sem alteração de contrato ou comportamento
+scope: "repositories migrados para interfaces Spring Data JPA (JpaRepository) com entidades internas e @Query, preservando contratos e comportamento"
 origin: NEW
 status: completed
 quality: pass
 closure: pass
-report: <backend>/docs/adr/ADR-001-vertical-slice.md
+report: <backend>/docs/adr/ADR-003-spring-data-jpa-repositories.md
 next_step: revisar o diff e commitar a refatoração; push não autorizado
 runtime:
   application: http://localhost:4200

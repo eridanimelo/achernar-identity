@@ -1,7 +1,7 @@
 package com.achernar.identity.shared.config;
 
-import com.achernar.identity.users.domain.repository.UserRepository;
 import com.achernar.identity.auth.service.AuthActions;
+import com.achernar.identity.users.repository.UserRepository;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;

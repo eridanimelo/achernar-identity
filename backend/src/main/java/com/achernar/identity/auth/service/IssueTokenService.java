@@ -1,17 +1,7 @@
 package com.achernar.identity.auth.service;
 
-import org.springframework.stereotype.Service;
+import com.achernar.identity.auth.dto.IssuedToken;
 
-@Service
-public class IssueTokenService {
-    private final LoginService login;
-
-    public IssueTokenService(LoginService login) {
-        this.login = login;
-    }
-
-    public IssuedToken token(String email, String password) {
-        var result = login.login(email, password);
-        return new IssuedToken(result.accessToken(), 900);
-    }
+public interface IssueTokenService {
+    IssuedToken token(String email, String password);
 }

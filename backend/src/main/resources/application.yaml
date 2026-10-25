@@ -7,6 +7,14 @@ spring:
     password: ${DATABASE_PASSWORD}
   liquibase:
     change-log: classpath:db/changelog.xml
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
   mail:
     host: ${SMTP_HOST:localhost}
     port: ${SMTP_PORT:1025}

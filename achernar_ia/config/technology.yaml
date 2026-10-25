@@ -21,7 +21,7 @@ details:
   angular_material: true
   postgresql: true
   liquibase: true
-  jpa_hibernate_domain: false   # IMP-01: Spring JDBC
+  jpa_hibernate_domain: true    # ADR-003: repositories Spring Data JPA; sem relacionamentos de objetos
   authorization_server_jdbc_components: false
   backend_build: maven
   lombok: false
