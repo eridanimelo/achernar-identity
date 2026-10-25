@@ -87,3 +87,17 @@ revision_action_icons:
     - <frontend>/src/app/features/auth/components
     - <frontend>/node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
   scope: apresentação de ações e navegação; sem nova abstração de aplicação
+
+revision_vertical_slice:
+  intent: ARCHITECTURE
+  scope: reorganização estrutural do backend em vertical slices por feature, sem alteração de comportamento
+  authorization: solicitação humana explícita de refatoração preservando contratos
+  sources:
+    - {path: <specs>/UC-001-identidade/api.md, reason: contratos HTTP a preservar, artifact: implementation}
+    - {path: <specs>/UC-001-identidade/implementation-decisions.md, reason: decisões anteriores, artifact: implementation}
+    - {path: <backend>/src/main/java/com/achernar/identity, reason: código AS-IS, artifact: implementation}
+    - {path: <backend>/src/test/java/com/achernar/identity, reason: validação existente, artifact: tests}
+    - {path: <frontend>/src/app, reason: confirmação de ausência de impacto, artifact: frontend}
+  reuse: MIXED; repositories e portas existentes preservados, camadas internas reorganizadas e services por caso de uso criados
+  functional_change: false
+  validation: <backend>/docs/adr/ADR-001-vertical-slice.md

@@ -1,11 +1,12 @@
-intent: SECURITY
-scope: correção dos 34 achados de segurança (SCA, SAST em testes e cabeçalhos Nginx)
+intent: ARCHITECTURE
+feature: UC-001-identidade
+scope: refatoração estrutural do backend em vertical slices por feature, sem alteração de contrato ou comportamento
 origin: NEW
 status: completed
 quality: pass
 closure: pass
-report: <reviews>/SEC-001-correcao-vulnerabilidades.md
-next_step: repetir SBOM/SCA/DAST na esteira sobre o commit corrigido
+report: <backend>/docs/adr/ADR-001-vertical-slice.md
+next_step: revisar o diff e commitar a refatoração; push não autorizado
 runtime:
   application: http://localhost:4200
   mode: docker-compose
