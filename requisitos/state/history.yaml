@@ -28,3 +28,9 @@ executions:
     result: completed
     changes: Spring Boot 4.1.2, bcprov 1.85, cabeçalhos COOP/COEP/CORP/Permissions-Policy e cache no Nginx
     evidence: <reviews>/SEC-001-correcao-vulnerabilidades.md
+  - date: 2026-10-25
+    intent: ARCHITECTURE
+    scope: refatoração estrutural do backend em vertical slices por feature (UC-001)
+    result: completed
+    changes: um controller por feature, um service por caso de uso, domain/{model,repository,exception} e shared transversal; sem alteração de contrato HTTP, transações ou segurança
+    evidence: <backend>/docs/adr/ADR-001-vertical-slice.md

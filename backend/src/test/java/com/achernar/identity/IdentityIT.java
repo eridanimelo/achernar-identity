@@ -1,6 +1,6 @@
 package com.achernar.identity;
 
-import com.achernar.identity.mail.MailDelivery;
+import com.achernar.identity.shared.mail.MailDelivery;
 import java.net.*;
 import java.net.http.*;
 import java.time.*;
